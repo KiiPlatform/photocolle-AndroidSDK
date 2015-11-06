@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="photocolle.sdk.dir" location="../photocolle-sdk" />
+  <property name="photocolle.sdk.name" value="PhotoColleSDK" />
+
+  <target name="debug-compile" depends="-build-debug-sdk-jar, -copy-debug-sdk, debug" />
+
+  <target name="-clean-sdk">
+    <ant dir="${photocolle.sdk.dir}" target="clean" inheritAll="false" />
+  </target>
+  <target name="-build-debug-sdk-jar">
+    <ant dir="${photocolle.sdk.dir}" target="debug" inheritAll="false" />
+  </target>
+  <target name="-copy-debug-sdk">
+    <copy
+        file="${photocolle.sdk.dir}/bin/classes.jar"
+        tofile="libs/${photocolle.sdk.name}.jar" />
+  </target>
+</project>

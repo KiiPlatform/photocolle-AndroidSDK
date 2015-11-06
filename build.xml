@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PhotoColleSDK" default="release">
+
+  <property file="photocolle-sdk/ant.properties" />
+
+  <property
+      name="photocolle.sdk.name"
+      value="PhotoColleSDK-Android-${photocolle.version}" />
+  <property name="photocolle.sdk.dir" value="photocolle-sdk" />
+  <property name="photocolle.app.dir" value="test-app" />
+  <property name="photocolle.target.dir" value="target" />
+  <property
+      name="photocolle.release.dir"
+      value="${photocolle.target.dir}/${photocolle.sdk.name}" />
+  <property
+      name="photocolle.distribution.dir"
+      value="${photocolle.release.dir}/distribution" />
+  <property
+      name="photocolle.release.zip"
+      value="${photocolle.target.dir}/${photocolle.sdk.name}.zip" />
+  <property
+      name="photocolle.app.apk.name"
+      value="PhotocolleTestApp-debug.apk" />
+
+  <target
+      name="release"
+      depends="-init, -clean-sdk, -clean-app, -build-sdk-release, -build-javadoc, -build-app, -copy">
+    <zip
+      destfile="${photocolle.release.zip}"
+      basedir="${photocolle.target.dir}" />
+  </target>
+
+  <target name="clean" depends="-delete" />
+
+  <target name="-delete">
+    <delete failonerror="false" dir="${photocolle.target.dir}" />
+  </target>
+
+  <target name="-init" depends="-delete">
+    <mkdir dir="${photocolle.release.dir}" />
+  </target>
+
+  <target name="-copy" depends="-copy-sdk, -copy-sdk-jar, -copy-app, -copy-app-apk, -copy-docs" />
+
+  <target name="-copy-sdk">
+    <copy todir="${photocolle.release.dir}/${photocolle.sdk.dir}">
+      <fileset
+        dir="${photocolle.sdk.dir}"
+        includes="assets/**,
+                  res/**,
+                  libs/**,
+                  src/**,
+                  AndroidManifest.xml,
+                  README.mkd,
+                  ant.properties,
+                  build.xml,
+                  custom_rules.xml,
+                  proguard-project.txt,
+                  project.properties"
+        excludes="**/.gitkeep" />
+    </copy>
+  </target>
+
+  <target name="-copy-sdk-jar">
+    <copy
+        file="${photocolle.sdk.dir}/bin/classes.jar"
+        tofile="${photocolle.distribution.dir}/${photocolle.sdk.name}.jar" />
+  </target>
+
+  <target name="-copy-app">
+    <copy todir="${photocolle.distribution.dir}/${photocolle.app.dir}">
+      <fileset
+        dir="${photocolle.app.dir}"
+        includes="assets/**,
+                  res/**,
+                  libs/**,
+                  src/**,
+                  AndroidManifest.xml,
+                  README.mkd,
+                  ant.properties,
+                  build.xml,
+                  custom_rules.xml,
+                  proguard-project.txt,
+                  project.properties"
+        excludes="**/.gitkeep,
+                  assets/photocolle_sdk_setting.json,
+                  assets/photocolle_setting.json" />
+    </copy>
+  </target>
+
+  <target name="-copy-app-apk">
+    <copy
+        file="${photocolle.app.dir}/bin/${photocolle.app.apk.name}"
+        tofile="${photocolle.distribution.dir}/${photocolle.app.apk.name}" />
+  </target>
+
+  <target name="-copy-docs">
+    <copy todir="${photocolle.distribution.dir}/docs">
+      <fileset dir="docs" />
+    </copy>
+    <copy
+        todir="${photocolle.distribution.dir}/docs/${photocolle.sdk.name}-API-Reference">
+      <fileset dir="${photocolle.sdk.dir}/bin/javadoc" />
+    </copy>
+    <copy todir="${photocolle.distribution.dir}/docs" file="README.mkd" />
+    <copy todir="${photocolle.distribution.dir}/docs" file="${photocolle.sdk.dir}/LIMITATION.mkd" />
+  </target>
+
+  <target name="-clean-sdk">
+    <ant dir="${photocolle.sdk.dir}" target="clean" />
+  </target>
+
+  <target name="-build-sdk-release">
+    <ant dir="${photocolle.sdk.dir}" target="release" />
+  </target>
+
+  <target name="-build-javadoc">
+    <ant dir="${photocolle.sdk.dir}" target="javadoc" />
+  </target>
+
+  <target name="-clean-app">
+    <ant dir="${photocolle.app.dir}" target="clean" />
+  </target>
+
+  <target name="-build-app" depends="-copy-sdk-to-test-app">
+    <ant dir="${photocolle.app.dir}" target="debug" />
+  </target>
+
+  <target name="-copy-sdk-to-test-app">
+    <copy
+	file="${photocolle.sdk.dir}/bin/classes.jar"
+	tofile="${photocolle.app.dir}/libs/PhotoColleSDK.jar" />
+  </target>
+</project>

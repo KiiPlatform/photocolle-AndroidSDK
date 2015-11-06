@@ -1,0 +1,11 @@
+## Limitations
+
+  * 2013/10/08
+    * Server error handling tests are insufficient.
+    * PhotoColle#getContentIDListWithTags() throws
+      ResponseBodyParseException if server sends month_tag_name whose
+      length is 0.
+  * 2013/05/31
+    * ~~This SDK is not full tested version~~
+    * ~~Argument variation tests are insufficient~~
+    * ~~PhotocolleException is not fine-grained~~

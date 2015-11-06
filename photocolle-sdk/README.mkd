@@ -1,0 +1,68 @@
+## Requirements
+
+  * Android 2.2 Platform (API Level: 8) and above.
+
+## Generating API references
+
+Execute following command on this directory.
+
+```sh
+ant javadoc
+```
+
+You can find API references in bin/javadoc. You can also find
+bin/PhotoColleSDK-Android-VERSION_API_doc.zip. This zip file contains
+files in bin/javadoc.
+
+
+## Build PhotoColle SDK
+
+Execute following command on this directory.
+
+```sh
+ant debug
+```
+
+You can find SDK jar file as bin/classes.jar.
+
+## Use PhotoColle SDK
+
+Copy SDK jar file to your application project and set library path.
+
+## photocolle\_sdk\_setting.json
+
+You can change access URL by setting file.
+You can get debug log for PhotoColleSDK by adding ```logging``` property.
+"authorityUrl" is base URL to get authorization code.
+"tokenUrl" is base URL to get access token.
+"photocolleUrl" is base URL for PhotoColle class.
+"logging" enables debug log, if logging is true, PhotoColleSDK output debug
+log. Otherwise PhotoColleSDK does not output debug log. Debug logs are outputed
+to logcat.
+If you create assets/photocolle_sdk_setting.json in application asset directory,
+the SDK use URLs in file.
+The path of URL is ignored. 
+
+example:
+
+```json
+{
+    "authorityUrl" : "https://crt.hoge.com/",
+    "tokenUrl" : "https://account-crt.hoge.com/",
+    "photocolleUrl" : "https://xlb.hoge.com/",
+    "logging" : true
+}
+```
+
+## Library used by PhotoColleSDK
+
+PhotoColleSDK uses httpmime-4.2.5.
+
+httpmime-4.2.5 is published under [Apache License, Version
+2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+httpmime-4.2.5 was included PhotoColleSDK. So you need nothing to use
+the library.
+
+To avoid conflict of class name, We modified package name of httpmime-4.2.5.
+So you can use original httpmime-4.2.5.

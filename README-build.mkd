@@ -1,0 +1,34 @@
+## Generating release package
+
+To change SDK version, you need to change photocolle.version in
+photocolle-sdk/ant.properties.
+
+Execute following command on this directory.
+
+```sh
+ant release
+```
+
+You can find release package at target/PhotoColleSDK-Android-{SDK version}.zip.
+
+
+## Cleaning release package
+
+Execute following command on this directory.
+
+```sh
+ant clean
+```
+
+## Update PhotoColleSDK.jar for test application
+
+Execute following command on test-app directory.
+
+```sh
+ant debug-compile
+```
+
+This command updates PhotoColleSDK.jar and build test application.
+
+You must execute this command before release and commit newest
+PhotoColleSDK.jar.

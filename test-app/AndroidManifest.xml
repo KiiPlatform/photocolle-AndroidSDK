@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.kii.example.photocolle"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
+
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+  <application
+    android:label="@string/app_name"
+    android:allowBackup="false">
+
+    <activity
+      android:name="EntryPoint"
+      android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <activity
+      android:name="IDListActivity"
+      android:label="@string/idlist_activity" />
+
+    <activity
+      android:name="CapacityInfoActivity"
+      android:label="@string/capacityinfo_activity" />
+
+    <activity
+      android:name="IDWithTagListActivity"
+      android:label="@string/idwithtaglist_activity" />
+
+    <activity
+      android:name="UploadActivity"
+      android:label="@string/upload_activity" />
+
+    <activity
+      android:name="TagListActivity"
+      android:label="@string/taglist_activity" />
+
+    <activity
+      android:name="DeletionHistoryActivity"
+      android:label="@string/deletion_history_activity" />
+
+    <activity
+      android:name="ThumbnailActivity"
+      android:label="@string/thumbnail_activity" />
+
+    <activity
+      android:name="ContentBodyActivity"
+      android:label="@string/content_body_activity" />
+
+    <activity
+      android:name="ContentInfoViewActivity"
+      android:label="@string/content_info_view_activity" />
+
+    <activity
+      android:name="TagViewActivity"
+      android:label="@string/tag_view_activity" />
+
+    <activity
+      android:name="AccessTokenListActivity"
+      android:label="@string/access_token_activity" />
+
+    <activity
+      android:name="ScopeSelectorListActivity"
+      android:label="@string/scope_selector_list_activity" />
+
+    <activity
+      android:name="com.kii.example.photocolle.AccessTokenEditActivity"
+      android:label="@string/access_token_edit_activity" >
+    </activity>
+
+    <activity
+      android:name="com.kii.sdk.photocolle.AuthHiddenActivity"
+      android:label="API"
+      android:launchMode="singleInstance">
+    </activity>
+  </application>
+</manifest>

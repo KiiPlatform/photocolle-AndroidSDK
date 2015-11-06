@@ -1,0 +1,6 @@
+## Limitations
+
+  * 2013/05/31
+    * This test application is not well tested
+    * This application can not change arguments value of PhotoColle object methods.
+    * Progress does not shown

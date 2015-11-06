@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Photocolle test application</string>
+
+  <!-- buttons -->
+  <string name="authenticate">Authenticate</string>
+  <string name="getContentIDList">Get content ID list</string>
+  <string name="getContentIDListWithTags">Get content ID list with tags</string>
+  <string name="getTagIDList">Get tag ID list</string>
+  <string name="getContentDeletionHitory">Get Content deletion history</string>
+  <string name="getContentBodyInfo">Get file</string>
+  <string name="getContentThumbnailInfo">Get content thumbnail list</string>
+  <string name="uploadContentBody">Upload file</string>
+  <string name="getCapacityInfo">Get capacity information</string>
+  <string name="get_ids">Get IDs</string>
+  <string name="get_ids_with_tags">Get IDs with tags</string>
+  <string name="get_tags">Get tags</string>
+  <string name="get_deletion_history">Get deletion history</string>
+  <string name="upload_image">Upload image</string>
+  <string name="get_capacity">Get capacity</string>
+  <string name="menu_get_ids">Get IDs</string>
+  <string name="idlist_activity">List of ID</string>
+  <string name="capacityinfo_activity">Capacity Information of Server.</string>
+  <string name="idwithtaglist_activity">List of ID with Tags</string>
+  <string name="upload_activity">Upload content body to server.</string>
+  <string name="menu_get_tags">Get Tags</string>
+  <string name="taglist_activity">List of Tags</string>
+  <string name="deletion_history_activity">Deletion history.</string>
+  <string name="thumbnail_activity">Get Thumbnail</string>
+  <string name="content_body_activity">Get content body</string>
+  <string name="no_data">NO DATA</string>
+  <string name="content_info_view_activity">Content Information View</string>
+  <string name="menu_get_body">Get Image</string>
+  <string name="menu_get_thumb">Get Thumbnail</string>
+  <string name="empty"></string>
+  <string name="tag_view_activity">Tag View</string>
+  <string name="tag_setting_category_label">category:</string>
+  <string name="tag_setting_minDateModified_label">minDateModified:</string>
+  <string name="tag_setting_date_check_text">As Null</string>
+  <string name="tag_setting_button_text">Back</string>
+  <string name="tag_setting_title">Setting: List of Tags</string>
+  <string name="menu_get_tags_setting">Setting</string>
+  <string name="menu_setting">Setting</string>
+  <string name="setting_filetype_label">fileType:</string>
+  <string name="setting_maxresults_label">maxResults:</string>
+  <string name="setting_start_label">start:</string>
+  <string name="setting_filter_label">dateFilter:</string>
+  <string name="setting_dustbox_label">forDustbox:</string>
+  <string name="setting_sort_label">sortType:</string>
+  <string name="del_history_setting_minDateDeleted_label">minDateDeleted:</string>
+  <string name="del_history_setting_date_check_text">As Null</string>
+  <string name="del_history_setting_button_text">Back</string>
+  <string name="del_history_setting_title">Setting: Deletion history</string>
+  <string name="id_setting_title">Setting: List of ID</string>
+  <string name="id_setting_button_text">Back</string>
+  <string name="setting_projectiontype_label">projectionType:</string>
+  <string name="id_with_tags_setting_title">Setting: List of ID with Tags</string>
+  <string name="id_with_tags_setting_button_text">Back</string>
+  <string name="list_access_token">List Access Token</string>
+  <string name="access_token_activity">List Access Token</string>
+  <string name="menu_set_user_id">User ID</string>
+  <string name="menu_set_user_id_title">Set your user ID.</string>
+  <string name="access_token_edit_activity">AccessTokenEditActivity</string>
+  <string name="access_token_edit_save">Save</string>
+  <string name="access_token_edit_change_1">Change access token</string>
+  <string name="access_token_edit_change_2">Change expired time</string>
+  <string name="access_token_edit_change_3">Change refresh token</string>
+  <string name="access_token_edit_change_all">Change all</string>
+  <string name="access_token_edit_remove">Remove</string>
+  <string name="menu_clear_access_tokens">Remove All AccessTokens</string>
+  <string name="scope_selector_list_activity">List of Scope</string>
+  <string name="menu_select_scopes">Select scopes</string>
+  <string name="menu_select_all">Select all</string>
+  <string name="menu_select_none">Select none</string>
+  <string name="refresh_token">Refresh token</string>
+
+  <!-- spinners -->
+  <string-array name="tag_setting_spinner_src">
+    <item>ALL</item>
+    <item>PERSON</item>
+    <item>EVENT</item>
+    <item>FAVORITE</item>
+    <item>PLACEMENT</item>
+    <item>YEAR_MONTH</item>
+  </string-array>
+  <string-array name="filetype_setting_spinner_src">
+    <item>IMAGE</item>
+    <item>VIDEO</item>
+    <item>SLIDE_MOVIE</item>
+  </string-array>
+  <string-array name="id_setting_filter_spinner_src">
+    <item>NONE</item>
+    <item>Min Date Upload</item>
+    <item>Min Date Modified</item>
+  </string-array>
+  <string-array name="id_setting_sort_spinner_src">
+    <item>CREATION_DATETIME_DESC</item>
+    <item>CREATION_DATETIME_ASC</item>
+    <item>MODIFICATION_DATETIME_DESC</item>
+    <item>MODIFICATION_DATETIME_ASC</item>
+    <item>UPLOAD_DATETIME_ASC</item>
+    <item>UPLOAD_DATETIME_DESC</item>
+  </string-array>
+  <string-array name="sorttype_setting_spinner_src">
+    <item>CREATION_DATETIME_DESC</item>
+    <item>CREATION_DATETIME_ASC</item>
+    <item>MODIFICATION_DATETIME_DESC</item>
+    <item>MODIFICATION_DATETIME_ASC</item>
+    <item>UPLOAD_DATETIME_ASC</item>
+    <item>UPLOAD_DATETIME_DESC</item>
+    <item>SCORE_DESC</item>
+  </string-array>
+  <string-array name="projectiontype_setting_spinner_src">
+    <item>FILE_COUNT</item>
+    <item>ALL_DETAILS</item>
+    <item>DETAILS_WITHOUT_TAGS</item>
+  </string-array>
+  <string-array name="filetype_with_all_setting_spinner_src">
+    <item>ALL</item>
+    <item>IMAGE</item>
+    <item>VIDEO</item>
+    <item>SLIDE_MOVIE</item>
+  </string-array>
+
+</resources>

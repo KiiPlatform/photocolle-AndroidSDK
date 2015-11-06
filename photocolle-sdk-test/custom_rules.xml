@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <property name="test.package.name" value="com.kii.example.photocolle.tests" />
+  <property name="test.runner"
+    value="pl.polidea.instrumentation.PolideaInstrumentationTestRunner" />
+  <property name="device.log.dir"
+    value="/mnt/sdcard/photocolle-test/junit-results" />
+  <property name="client.log.dir"
+    value="junit-results" />
+
+  <target name="unit-test">
+    <echo message="start unit test..." />
+    <antcall target="-execute-test">
+      <param name="test.target.package" value="com.kii.sdk.photocolle" />
+    </antcall>
+  </target>
+
+  <target name="integrity-test">
+    <echo message="start integrity test..." />
+    <antcall target="-execute-test">
+      <param name="test.target.package" value="com.kii.example.photocolle.integrity" />
+    </antcall>
+  </target>
+
+  <target name="all-test" depends="-setup-log-directory, uninstall, clean, debug, installd">
+    <echo message="start all test..." />
+
+    <exec executable="adb" failonerror="false">
+      <arg line="shell am instrument -w"  />
+      <arg line="-e junitOutputDirectory ${device.log.dir}" />
+      <arg line="-e junitSplitLevel package" />
+      <arg line="${test.package.name}/${test.runner}" />
+    </exec>
+
+    <antcall target="-copy-result" />
+  </target>
+
+  <target name="-execute-test" depends="-setup-log-directory, uninstall, clean, debug, installd">
+    <echo message="execuiting test..." />
+
+    <!-- execute tests -->
+    <exec executable="adb" failonerror="false">
+      <arg line="shell am instrument -w"  />
+      <arg line="-e package ${test.target.package}" />
+      <arg line="-e junitOutputDirectory ${device.log.dir}" />
+      <arg line="-e junitSplitLevel package" />
+      <arg line="${test.package.name}/${test.runner}" />
+    </exec>
+
+    <antcall target="-copy-result" />
+  </target>
+
+  <target name="-setup-log-directory">
+    <echo message="setup log directory..." />
+
+    <exec executable="adb">
+      <arg line="shell rm -r ${device.log.dir}" />
+    </exec>
+
+    <delete dir="${client.log.dir}" failonerror="false" />
+    <mkdir dir="${client.log.dir}" />
+  </target>
+
+  <target name="-copy-result">
+    <exec executable="adb" failonerror="false" dir="${client.log.dir}">
+      <arg value="pull" />
+      <arg value="${device.log.dir}" />
+    </exec>
+  </target>
+
+</project>

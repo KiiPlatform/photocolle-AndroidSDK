@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.kii.sdk.photocolle"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+  <uses-sdk android:minSdkVersion="8" />
+
+
+  <!-- add this activity tag to application children.
+  <activity
+    android:name="com.kii.sdk.photocolle.AuthHiddenActivity"
+    android:label="API"
+    android:launchMode="singleTask">
+    <intent-filter>
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:scheme="photocolleauth" android:host="com.kii.sdk.photocolle"/>
+    </intent-filter>
+  </activity>
+  -->
+
+</manifest>

@@ -1,0 +1,14 @@
+## Authentication data.
+
+clientId, clientSecret and redirectUri are retrieved from asset.
+You should create assets/photocolle_setting.json in asset directory.
+
+example:
+
+```json
+{
+    "clientId" : "CLIENTID",
+    "clientSecret" : "CLIENTSECRET",
+    "redirectUri" : "REDIRECTURI"
+}
+```

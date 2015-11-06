@@ -1,0 +1,48 @@
+This is a package for PhotoColleSDK.
+PhotoColleSDK is a SDK to use docomo PHOTO COLLECTION services.
+
+This package contains followings:
+
+  * Reference guide and API references in docs directory.
+  * PhotoColleSDK source files in photocolle-sdk directory.
+  * Test application source files in test-app directory.
+
+Please read README under each directory for details.
+
+## photocolle\_sdk\_setting.json
+
+You can change access URL by setting file.
+You can get debug log for PhotoColleSDK by adding ```logging``` property.
+"authorityUrl" is base URL to get authorization code.
+"tokenUrl" is base URL to get access token.
+"photocolleUrl" is base URL for PhotoColle class.
+"logging" enables debug log, if logging is true, PhotoColleSDK output debug
+log. Otherwise PhotoColleSDK does not output debug log. Debug logs are outputed
+to logcat.
+If you create assets/photocolle_sdk_setting.json in application asset directory,
+the SDK use URLs in file.
+The path of URL is ignored.
+
+example:
+
+```json
+{
+    "authorityUrl" : "https://crt.hoge.com/",
+    "tokenUrl" : "https://account-crt.hoge.com/",
+    "photocolleUrl" : "https://xlb.hoge.com/",
+    "logging" : true
+}
+```
+
+## Library used by PhotoColleSDK
+
+PhotoColleSDK uses httpmime-4.2.5.
+
+httpmime-4.2.5 is published under [Apache License, Version
+2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+httpmime-4.2.5 was included PhotoColleSDK. So you need nothing to use
+the library.
+
+To avoid conflict of class name, We modified package name of httpmime-4.2.5.
+So you can use original httpmime-4.2.5.

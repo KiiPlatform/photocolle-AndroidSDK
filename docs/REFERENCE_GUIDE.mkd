@@ -1,0 +1,302 @@
+# PhotoColle SDK リファレンスガイド
+
+## SDKを使用するための準備
+
+PhotoColle SDKはAndroid 2.2プラットフォーム(APIレベル: 8)以降の環境に対応してい
+ます。
+使用するSDKのバージョン等を確認してください。
+
+あなたの作成するAndroidアプリケーションのAndroidManifest.xml内に後述の内容を追
+加してください。
+
+SDKでは通信を行うため、ネットワークアクセスのパーミッションが必要となります。
+use-permissionタグを追加しINTERNETのパーミッションを設定してください。
+
+SDK内でActivityを使用しています。そのActivityを使えるようにするために
+applicationタグに下記のサンプルのようなactivityタグを追加してください。
+
+AndroidManifest.xmlの変更箇所抜粋サンプルです。
+```xml
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kii.example.photocolle"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+  <uses-permission android:name="android.permission.INTERNET"/>
+
+  <application>
+
+    <activity
+      android:name="com.kii.sdk.photocolle.AuthHiddenActivity"
+      android:label="API" />
+
+  </application>
+
+</manifest>
+```
+
+
+## AuthenticationContextの取得
+
+PhotoColle SDKの各APIを使用するためにはまずAuthenticationContextを取得する必要が
+あります。
+AuthenticationContextを取得するためにはAuthorityクラスのauthenticate静的メソッド
+を使用します。
+
+以下の値をauthenticate静的メソッドに渡す事でAuthenticationContextを取得出来ます。
+
+  * ドコモから払い出されたCLIENT\_ID
+  * ドコモから払い出されたCLIENT\_SECRET
+  * サービス登録時に指定したREDIRECT_URI
+  * デバイスのディスプレイタイプ
+  * 認証終了時にコールバックされるAuthenticateCallback
+
+取得を開始するとWeb viewでユーザ認可と認可同意確認を行います。必要な手
+続きを行ってください。完了するとAuthenticationContextが取得できます。取
+得したAuthenticationContextを使いPhotoColleクラスのインスタンスを作成し
+ます。
+
+```java
+public class Foo extends Activity implements AuthenticateCallback
+{
+    private static final String CLIENT_ID = "***";
+    private static final String CLIENT_SECRET = "***";
+    private static final String REDIRECT_URI = "***";
+
+    private PhotoColle photoColle;
+
+    // 中略.
+
+    @Override
+    public void onAuthenticated(AuthenticationContext context) {
+        photoColle = new PhotoColle(context);
+    }
+
+    @Override
+    public void onDidNotAuthenticate(Exception e) {
+        // 取得に失敗しました。例外を参考に原因を特定してください.
+    }
+
+    public void doAuthenticate() {
+        Authority.authenticate(getApplicationContext(), CLIENT_ID,
+                CLIENT_SECRET, REDIRECT_URI, DisplayType.SMART_PHONE, this);
+    }
+}
+```
+
+
+## AuthenticationContextの保存と再利用
+
+AuthenticationContextは有効期間中はアプリケーションセッションが終了しても使用することが可能です。
+SharedPreferenceへの保存と再利用するためのメソッドがAuthenticationContextクラスに
+用意されています。
+SharedPreferenceに保存するためのキーは実装者が任意に決めてください。
+
+```java
+public class Foo extends Activity implements AuthenticateCallback
+{
+    private static final String KEY_AUTHENTICATE_CONTEXT =
+        "AuthenticationContext";
+
+    // 中略.
+
+        authenticateContext.saveTo(this, KEY_AUTHENTICATE_CONTEXT);
+
+    // 中略.
+
+        AuthenticationContext authenticateContext = AuthenticationContext.loadFrom(
+            this, KEY_AUTHENTICATE_CONTEXT);
+
+    // 中略.
+}
+```
+
+## AuthenticationContextの確認と保存
+
+SharedPreferenceにAuthenticationContextが既に保存されているかを確認でき
+ます。また、不要になったAuthenticationContextはSharedPreferenceから削除
+できます。
+
+SharedPreferenceから削除する為のメソッドと確認する為のメソッドが
+AuthenticationContextクラスに用意されています。保存に利用したキーを指定
+して削除、確認してください。
+
+```java
+public class Foo extends Activity implements AuthenticateCallback
+{
+    private static final String KEY_AUTHENTICATE_CONTEXT =
+        "AuthenticationContext";
+
+    public void remove() {
+        // AuthenticationContextの確認.
+        if (AuthenticationContext.hasSaved(this, KEY_AUTHENTICATE_CONTEXT)) {
+            // AuthenticationContextの削除.
+            AuthenticationContext.removeFrom(this, KEY_AUTHENTICATE_CONTEXT);
+        }
+    }
+}
+```
+
+## PhotoColleのメソッドを使用する際の注意
+
+PhotoColleクラスのgetAuthenticationContext以外の各メソッドではサーバと通信を行
+うため、メインスレッドからは呼び出すことができません。使用する場合はAsyncTaskな
+どを使用してメインスレッド外から呼び出すようにしてください。
+
+例: PhotoColle.getContentIDList呼び出し.
+
+```java
+AsyncTask<Void, Void, ListResponse<ContentInfo>> task =
+        new AsyncTask<Void, Void, ListResponse<ContentInfo>>()
+{
+    private PhotocolleException exception = null;
+
+    protected ListResponse<ContentInfo> doInBackground(Void... args) {
+        try {
+            return photoColle.getContentIDList(
+                    FileType.IMAGE, false, null, null, null,
+                    SortType.CREATION_DATETIME_ASC);
+        } catch (PhotocolleException e) {
+            this.exception = e;
+            return null;
+        }
+    }
+
+    protected void onPostExecute(ListResponse<ContentInfo> response) {
+        if (response != null) {
+            // responseの処理.
+        } else if (this.exception != null) {
+            // 例外の処理.
+        }
+    }
+};
+task.execute();
+```
+
+
+## サーバ上の空き容量を確認する
+
+アップロードを行う前にサーバ側の空き容量を確認してください。
+PhotoColleクラスのgetCapacityInfoメソッドでCapacityInfoを取得することで確認でき
+ます。
+
+```java
+CapacityInfo info = photoColle.getCapacityInfo();
+checkFreeSpace(info.getFreeSpace());
+```
+
+
+## コンテンツをアップロードする
+
+コンテンツのアップロードにはPhotoColleクラスのuploadContentBodyメソッドを使用し
+ます。
+ファイル情報や本体データを指定して使用することでサーバに送信されます。
+結果として得られるDataIDはコンテンツIDとは別のもので現在は使用用途がありません。
+保存などは行わなくてよいです。
+
+```java
+String fileName = "test.jpg";
+File file = new File(Environment.getExternalStorageDirectory(), fileName);
+FileInputStream fis = new FileInputStream(file);
+DataID dataID = photoColle.uploadContentBody(FileType.IMAGE, fileName,
+    file.length(), MimeType.JPEG, fis);
+```
+
+
+## コンテンツ情報を一覧で取得する
+
+サーバへアップロードされたコンテンツの情報を取得するにはPhotoColleクラスの
+getContentIDListメソッドを使用し、一覧として取得します。
+なお、このAPIで取得するコンテンツ情報にはタグの内容は一切含まれません。
+
+```java
+ListResponse<ContentInfo> infoList = photoColle.getContentIDList(
+        FileType.IMAGE, false, null, null, null,
+        SortType.CREATION_DATETIME_ASC);
+```
+
+
+## コンテンツ情報の詳細を一覧で取得する
+
+コンテンツの情報の詳細を取得するにはタグ情報付きでコンテンツ情報を取得しなけれ
+ばなりません。
+それには以下の2つの手順が必要となります。
+
+### コンテンツのタグ情報一覧を取得する
+
+タグ自体の情報が必要となります。
+タグ自体の情報を取得するにはPhotoColleクラスのgetTagIDListメソッドを使用しま
+す。
+
+```java
+ListResponse<Tag> tagList =  photoColle.getTagIDList(Category.ALL,
+        FileType.IMAGE, null);
+```
+
+### コンテンツ情報の詳細を取得する
+
+タグ自体の情報から抽出するタグを最大5個選択しコンテンツ情報の取得を行います。
+詳細なコンテンツ情報を取得するにはPhotoColleクラスのgetContentIDListWithTagsメ
+ソッドを使用します。
+
+```java
+// Jhonに関するタグを取得する.
+List<TagHead> criteriaList = new ArrayList<TagHead>();
+for (Tag tag : tagList.getList()) {
+    if ("Jhon".equals(tag.getName())) {
+        criteriaList.add(tag);
+        break;
+    }
+}
+
+ListResponse<DetailedContentInfo> info2List = photoColle.getContentIDListWithTags(
+        ProjectionType.ALL_DETAILS, FileType.IMAGE,
+        criteriaList, false, null, null, null,
+        SortType.CREATION_DATETIME_ASC);
+
+for (DetailedContentInfo info : info2List) {
+    // Jhonにタグ付けされたコンテンツの一覧
+}
+```
+
+
+## コンテンツのサムネイルを取得する
+
+コンテンツのサムネイル情報を取得するにはPhotoColleクラスの
+getContentThumbnailInfoメソッドを使用します。
+getContentThumbnailInfoは複数のContentGUIDを指定でき、一度に複数のコンテンツの
+サムネイルを取得することができます。
+
+```java
+// getGuidArrayはinfoList内のContentInfoインスタンスからguidを取り出し 
+// 取得したいコンテンツのguidのみを配列として返します.
+ContentGUID[] guids = getGuidArray(infoList);
+ContentThumbnailInfoList thumbList = photoColle.getContentThumbnailInfo(
+        guids);
+```
+
+
+## コンテンツの本体を取得する
+
+コンテンツの本体を取得するにはPhotoColleクラスのgetContentBodyInfoメソッドを使
+用します。
+
+```java
+ContentInfo info = infoList.getList().get(0);
+ContentBodyInfo bodyInfo = photoColle.getContentBodyInfo(
+        info.getFileType(), info.getGuid(), ResizeType.ORIGINAL);
+```
+
+
+## サーバ上での削除履歴を取得する
+
+サーバ上で既に削除されているコンテンツを確認するには削除履歴を取得します。
+削除履歴を取得するにはPhotoColleクラスのgetContentDeletionHistoryメソッドを使用
+します。
+
+```java
+ListResponse<ContentGUID> deleteInfo = photoColle.getContentDeletionHistory(
+        FileType.IMAGE, null, null, null);
+```
+
