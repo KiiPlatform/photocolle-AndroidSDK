@@ -1,0 +1,138 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'java'
+
+def outputDir = 'target'
+def releaseName = "PhotoColleSDK-Android-${photocolleSDKVersion}"
+def distributionDir = "${outputDir}/${releaseName}/distribution"
+def sdkDir = 'photocolle-sdk'
+def sdkOutputDir = "${sdkDir}/sdk/build"
+def sdkAARName = 'sdk-release.aar'
+def sdkAARPath = "${sdkOutputDir}/outputs/aar/${sdkAARName}"
+def appDir = 'test-app'
+def appAPKName = 'app-debug.apk'
+
+task cleanRelease(type: Delete) {
+    delete outputDir
+}
+
+task initTarget(dependsOn: cleanRelease) << {
+    (new File(outputDir)).mkdirs()
+}
+
+task cleanSDK(dependsOn: ':photocolle-sdk:sdk:clean') {
+}
+
+task buildSDK(dependsOn: ':photocolle-sdk:sdk:build') {
+    mustRunAfter "cleanSDK"
+}
+
+task buildSDKJavaDoc(dependsOn: ':photocolle-sdk:sdk:javadoc') {
+    mustRunAfter "cleanSDK"
+}
+
+task cleanApp(dependsOn: ':test-app:app:clean') {
+}
+
+task copySDKToApp(type: Copy, dependsOn: buildSDK) {
+    from "${sdkAARPath}"
+    into "${appDir}/app/libs"
+    rename("${sdkAARName}", "PhotoColleSDK.aar")
+}
+
+task buildApp(dependsOn: ':test-app:app:build') {
+    mustRunAfter "cleanApp", "copySDKToApp"
+}
+
+task copySDK(type: Copy) {
+    from("${sdkDir}") {
+        include 'sdk/libs/**'
+        include 'sdk/src/main/java/**'
+        include 'sdk/src/main/AndroidManifest.xml'
+        include 'sdk/build.gradle'
+        include 'gradle.properties'
+        include 'README.mkd'
+        include 'build.gradle'
+        include 'gradle/**'
+        include 'gradlew'
+        include 'gradlew.bat'
+        include 'proguard-project.txt'
+        include 'settings.gradle'
+    }
+    into "${outputDir}/${releaseName}/${sdkDir}"
+    exclude '**/.gitkeep'
+}
+
+task copySDKAARToDistribution(type: Copy, dependsOn: buildSDK) {
+    from "${sdkAARPath}"
+    into "${distributionDir}"
+    rename("${sdkAARName}", "${releaseName}.aar")
+}
+
+task copyApp(type: Copy) {
+    from("${appDir}") {
+        include 'app/src/main/assets/**'
+        include 'app/src/main/res/**'
+        include 'app/libs/**'
+        include 'app/src/main/java/**'
+        include 'app/src/main/AndroidManifest.xml'
+        include 'app/build.gradle'
+        include 'README.mkd'
+        include 'build.gradle'
+        include 'gradle/**'
+        include 'gradlew'
+        include 'gradlew.bat'
+        include 'proguard-project.txt'
+        include 'settings.gradle'
+    }
+    into "${distributionDir}/${appDir}"
+    exclude '**/.gitkeep'
+    exclude 'app/src/main/assets/photocolle_sdk_setting.json'
+    exclude 'app/src/main/assets/photocolle_setting.json'
+}
+
+task copyAppAPK(type: Copy, dependsOn: buildApp) {
+    from "${appDir}/app/build/outputs/apk/${appAPKName}"
+    into "${distributionDir}"
+    rename("${appAPKName}", "PhotocolleTestApp-debug.apk")
+}
+
+task copyJavaDoc(type: Copy, dependsOn: buildSDKJavaDoc) {
+    from "${sdkOutputDir}/docs/javadoc"
+    into "${distributionDir}/docs/${releaseName}-API-Reference"
+}
+
+task copyDocs(type: Copy, dependsOn: copyJavaDoc) {
+    from 'docs'
+    from 'README.mkd'
+    from "${sdkDir}/LIMITATION.mkd"
+    into "${distributionDir}/docs"
+}
+
+task copy(dependsOn: [copySDK, copySDKAARToDistribution, copyApp, copyAppAPK, copyDocs]) {
+    mustRunAfter "initTarget"
+}
+
+task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, cleanApp, buildSDK, buildSDKJavaDoc, copySDKToApp, buildApp, copy]) {
+    archiveName "${releaseName}.zip"
+    from "${outputDir}/${releaseName}"
+    into "${releaseName}"
+    destinationDir new File(outputDir)
+}
+
+task debugCompile(dependsOn: [cleanSDK, cleanApp, buildSDK, copySDKToApp, buildApp]) {
+}
