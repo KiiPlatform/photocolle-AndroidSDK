@@ -17,7 +17,7 @@ The example of the auth.json is followings:
 
 ## Data files
 
-Before you start test, you need to copy files in data directory to
+Before you start test, you need to copy files in testdata directory to
 a directory ```/sdcard/photocolle-test/data``` of your device or emulator.
 
 ## Changing URL
@@ -27,19 +27,19 @@ photocolle_sdk_setting.json to assets directory.
 
 ## Executing test on command line.
 
-You can execute test on command line with ant command. Targets of ant
+You can execute test on command line with gradle command. Tasks of gradle
 command were followings:
 
-  * unit-test : executing unit tests.
-  * integrity-test : executing integrity tests.
-  * all-test : executing unit tests and integrity tests.
+  * unitTest : executing unit tests.
+  * integrityTest : executing integrity tests.
+  * allTest : executing unit tests and integrity tests.
 
 Test results are placed under junit-results directory.
 
 Example of executing tests on command line is following:
 
 ```sh
-ant unit-test
+gradlew unitTest
 ```
 
 ## Using libraries
