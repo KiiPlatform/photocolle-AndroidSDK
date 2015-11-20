@@ -31,5 +31,5 @@ repositories {
 dependencies {
     compile 'com.squareup.okhttp:okhttp-apache:2.3.0'
     compile 'com.android.support:support-v4:18.0.0'
-    compile files('libs/PhotoColleSDK.jar')
+    compile(name: 'PhotoColleSDK', ext: 'aar')
 }

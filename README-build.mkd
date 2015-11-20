@@ -20,7 +20,7 @@ Execute following command on this directory.
 gradlew cleanRelease
 ```
 
-## Update PhotoColleSDK.jar for test application
+## Update PhotoColleSDK.aar for test application
 
 Execute following command on this directory.
 
@@ -28,7 +28,7 @@ Execute following command on this directory.
 gradlew debugCompile
 ```
 
-This command updates PhotoColleSDK.jar and build test application.
+This command updates PhotoColleSDK.aar and build test application.
 
 You must execute this command before release and commit newest
-PhotoColleSDK.jar.
+PhotoColleSDK.aar.
