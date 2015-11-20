@@ -1,0 +1,98 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 8
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile 'com.squareup.okhttp:okhttp-apache:2.3.0'
+    androidTestCompile files('libs/commons-fileupload-1.3.jar')
+    androidTestCompile files('libs/dexmaker-1.0.jar')
+    androidTestCompile files('libs/dexmaker-mockito-1.0.jar')
+    androidTestCompile files('libs/mockito-all-1.9.5.jar')
+    androidTestCompile files('libs/the-missing-android-xml-junit-test-runner-release-1.3_2.jar')
+}
+
+android.libraryVariants.all { variant ->
+
+    if (variant.name == "debug") {
+        return
+    }
+
+    task("javadoc", type: Javadoc) {
+        title = "PhotoCollectionSDK API-${photocolleSDKVersion} Specification"
+        description "Generates JavaDoc."
+        source = variant.javaCompile.source
+        ext.androidJar =
+                "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+        options.links("http://d.android.com/reference/");
+        options.encoding("utf-8")
+        options.charSet("utf-8")
+        options.locale("en_US")
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+        exclude 'com/kii/sdk/photocolle/_InternalPhotoColleSDKSetter.java'
+        exclude 'com/kii/sdk/photocolle/http/**'
+    }
+}
+
+task unitTest(type: Exec, dependsOn: build) {
+    description 'executing unit tests.'
+
+    doFirst {
+        delete('../junit-results')
+        executable "adb"
+        args "shell", "am instrument -w -e package com.kii.sdk.photocolle -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.example.photocolle.tests/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+    }
+
+    doLast {
+        "adb pull /mnt/sdcard/photocolle-test/junit-results ./junit-results/".execute()
+    }
+}
+
+task integrityTest(type: Exec, dependsOn: build) {
+    description 'executing integrity tests.'
+
+    doFirst {
+        delete('../junit-results')
+        executable "adb"
+        args "shell", "am instrument -w -e package com.kii.example.photocolle.integrity -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.example.photocolle.tests/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+    }
+
+    doLast {
+        "adb pull /mnt/sdcard/photocolle-test/junit-results ./junit-results/".execute()
+    }
+}
+
+task allTest(type: Exec, dependsOn: build) {
+    description 'executing unit tests and integrity tests.'
+
+    doFirst {
+        delete('../junit-results')
+        executable "adb"
+        args "shell", "am instrument -w -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.example.photocolle.tests/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+    }
+
+    doLast {
+        "adb pull /mnt/sdcard/photocolle-test/junit-results ./junit-results/".execute()
+    }
+}
+
