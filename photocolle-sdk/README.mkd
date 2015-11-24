@@ -7,7 +7,7 @@
 Execute following command on this directory.
 
 ```sh
-ant javadoc
+gradlew javadoc
 ```
 
 You can find API references in bin/javadoc. You can also find
@@ -20,14 +20,14 @@ files in bin/javadoc.
 Execute following command on this directory.
 
 ```sh
-ant debug
+gradlew build
 ```
 
-You can find SDK jar file as bin/classes.jar.
+You can find SDK aar file as sdk/build/outpus/aar/sdk-release.aar.
 
 ## Use PhotoColle SDK
 
-Copy SDK jar file to your application project and set library path.
+Copy SDK aar file to your application project and set dependencies.
 
 ## photocolle\_sdk\_setting.json
 
