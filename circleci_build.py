@@ -8,9 +8,6 @@ import argparse
 parser = argparse.ArgumentParser(description="Circle CI Parameterized Build")
 parser.add_argument('-b', '--branch', dest='branch', help='branch to build',
         required=True)
-parser.add_argument('-l','--large-test', dest='run_large_test', default='false',
-        choices=['true', 'false'],
-        help='run large tests')
 
 def getLogger():
     logger = logging.getLogger('debug')
@@ -29,9 +26,6 @@ class CircleCI(object):
     def parameterizedBuild(self):
         self.logger.debug('trigger parameterized build on Circle CI')
         parameters = {}
-
-        if (self.run_large_test != None and self.run_large_test == 'true'):
-            parameters.update({'RUN_LTEST': 'true'})
 
         bodyDict = {}
         if parameters:
@@ -54,6 +48,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     ci = CircleCI()
     ci.branch = args.branch
-    ci.run_large_test = args.run_large_test
 
     ci.parameterizedBuild()

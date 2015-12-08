@@ -41,13 +41,3 @@ test:
     - adb logcat -d > logcat.txt
     - mv logcat.txt $CIRCLE_ARTIFACTS/logcat_small_test.txt
 
-    # run largetests
-    - >
-      if [ "$RUN_LTEST" == "true" ]; then
-        ./gradlew photocolle-sdk:sdk:allTest
-        mkdir $CIRCLE_TEST_REPORTS/largetests; cp -r junit-results/*.xml $CIRCLE_TEST_REPORTS/largetests/
-        # copy the logcat file to test results directory.
-        adb logcat -d > logcat.txt
-        mv logcat.txt $CIRCLE_ARTIFACTS/logcat_large_test.txt
-      fi
-    - >
