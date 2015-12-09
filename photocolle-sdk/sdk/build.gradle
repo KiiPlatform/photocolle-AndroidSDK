@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 8
+    compileSdkVersion 17
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 8
+        targetSdkVersion 17
     }
 
     buildTypes {
@@ -54,13 +54,13 @@ android.libraryVariants.all { variant ->
     }
 }
 
-task unitTest(type: Exec, dependsOn: build) {
+task unitTest(type: Exec, dependsOn: [build, ':copySDKToApp', 'installDebugAndroidTest', ':test-app:app:installDebug']) {
     description 'executing unit tests.'
 
     doFirst {
         delete('../junit-results')
         executable "adb"
-        args "shell", "am instrument -w -e package com.kii.sdk.photocolle -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.example.photocolle.tests/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+        args "shell", "am instrument -w -e package com.kii.sdk.photocolle -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.sdk.photocolle.test/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
     }
 
     doLast {
@@ -68,13 +68,13 @@ task unitTest(type: Exec, dependsOn: build) {
     }
 }
 
-task integrityTest(type: Exec, dependsOn: build) {
+task integrityTest(type: Exec, dependsOn: [build, ':copySDKToApp', 'installDebugAndroidTest', ':test-app:app:installDebug']) {
     description 'executing integrity tests.'
 
     doFirst {
         delete('../junit-results')
         executable "adb"
-        args "shell", "am instrument -w -e package com.kii.example.photocolle.integrity -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.example.photocolle.tests/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+        args "shell", "am instrument -w -e package com.kii.example.photocolle.integrity -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.sdk.photocolle.test/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
     }
 
     doLast {
@@ -82,13 +82,13 @@ task integrityTest(type: Exec, dependsOn: build) {
     }
 }
 
-task allTest(type: Exec, dependsOn: build) {
+task allTest(type: Exec, dependsOn: [build, ':copySDKToApp', 'installDebugAndroidTest', ':test-app:app:installDebug']) {
     description 'executing unit tests and integrity tests.'
 
     doFirst {
         delete('../junit-results')
         executable "adb"
-        args "shell", "am instrument -w -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.example.photocolle.tests/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+        args "shell", "am instrument -w -e junitOutputDirectory /mnt/sdcard/photocolle-test/junit-results -e junitSplitLevel package com.kii.sdk.photocolle.test/pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
     }
 
     doLast {
