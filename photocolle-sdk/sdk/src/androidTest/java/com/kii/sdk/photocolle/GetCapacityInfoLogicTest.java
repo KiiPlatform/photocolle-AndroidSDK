@@ -8,9 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 
 import com.kii.example.photocolle.annotation.TestInformation;
 
-import android.test.AndroidTestCase;
-
-public class GetCapacityInfoLogicTest extends AndroidTestCase {
+public class GetCapacityInfoLogicTest extends TestCaseBase {
 
     @TestInformation(
             url = "https://docs.google.com/a/muraoka-design.com/spreadsheet/ccc?key=0Al0NPhbFN_J-dC1nd3RCR2pkRkVDSmdnYzc0UVVlZmc#gid=10",

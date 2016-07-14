@@ -15,13 +15,12 @@ import com.kii.example.photocolle.annotation.TestInformation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.test.AndroidTestCase;
 import android.util.Log;
 
 import static org.mockito.Mockito.*;
 
 
-public class AuthorityTest extends AndroidTestCase {
+public class AuthorityTest extends TestCaseBase {
 
     private static final AuthenticateCallback DUMMY_CALLBACK;
     private static final EnumSet<Scope> EMPTY_PREDEFINED_SCOPES;

@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import com.kii.example.photocolle.annotation.TestInformation;
 
 import android.annotation.SuppressLint;
-import android.test.AndroidTestCase;
 import android.text.format.Time;
 
 /**
@@ -28,7 +27,7 @@ import android.text.format.Time;
  * were checked, but does not check combination of these arguments.
  */
 @SuppressLint("NewApi")
-public class GetContentIDListWithTagsLogicTest extends AndroidTestCase {
+public class GetContentIDListWithTagsLogicTest extends TestCaseBase {
 
     @TestInformation(
             url = "https://docs.google.com/a/muraoka-design.com/spreadsheet/ccc?key=0Al0NPhbFN_J-dC1nd3RCR2pkRkVDSmdnYzc0UVVlZmc#gid=2",

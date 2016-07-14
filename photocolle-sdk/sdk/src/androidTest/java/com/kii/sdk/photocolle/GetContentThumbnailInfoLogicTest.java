@@ -12,9 +12,7 @@ import org.json.JSONObject;
 
 import com.kii.example.photocolle.annotation.TestInformation;
 
-import android.test.AndroidTestCase;
-
-public class GetContentThumbnailInfoLogicTest extends AndroidTestCase {
+public class GetContentThumbnailInfoLogicTest extends TestCaseBase {
 
     @TestInformation(
         url = "https://docs.google.com/a/muraoka-design.com/spreadsheet/ccc?key=0Al0NPhbFN_J-dC1nd3RCR2pkRkVDSmdnYzc0UVVlZmc#gid=8",
