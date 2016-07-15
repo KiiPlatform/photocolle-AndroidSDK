@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -811,9 +812,9 @@ public class AuthorityTest extends TestCaseBase {
         // ID0002
         {
             AuthenticationContext context = mock(AuthenticationContext.class);
-            when(context.getClientId()).thenReturn(null);
-            when(context.getClientSecret()).thenReturn("dummy");
-            when(context.getAppContext()).thenReturn(mContext);
+            Whitebox.setInternalState(context, "clientId", null);
+            Whitebox.setInternalState(context, "clientSecret", "dummy");
+            Whitebox.setInternalState(context, "appContext", mContext);
             Exception throwed = null;
             try {
                 Authority.refreshToken(context, new AuthenticateCallback() {
@@ -840,9 +841,9 @@ public class AuthorityTest extends TestCaseBase {
         // ID0003
         {
             AuthenticationContext context = mock(AuthenticationContext.class);
-            when(context.getClientId()).thenReturn("");
-            when(context.getClientSecret()).thenReturn("dummy");
-            when(context.getAppContext()).thenReturn(mContext);
+            Whitebox.setInternalState(context, "clientId", "");
+            Whitebox.setInternalState(context, "clientSecret", "dummy");
+            Whitebox.setInternalState(context, "appContext", mContext);
             Exception throwed = null;
             try {
                 Authority.refreshToken(context, new AuthenticateCallback() {
@@ -869,9 +870,9 @@ public class AuthorityTest extends TestCaseBase {
         // ID0004
         {
             AuthenticationContext context = mock(AuthenticationContext.class);
-            when(context.getClientId()).thenReturn("dummy");
-            when(context.getClientSecret()).thenReturn(null);
-            when(context.getAppContext()).thenReturn(mContext);
+            Whitebox.setInternalState(context, "clientId", "dummy");
+            Whitebox.setInternalState(context, "clientSecret", null);
+            Whitebox.setInternalState(context, "appContext", mContext);
             Exception throwed = null;
             try {
                 Authority.refreshToken(context, new AuthenticateCallback() {
@@ -898,9 +899,9 @@ public class AuthorityTest extends TestCaseBase {
         // ID0005
         {
             AuthenticationContext context = mock(AuthenticationContext.class);
-            when(context.getClientId()).thenReturn("dummy");
-            when(context.getClientSecret()).thenReturn("");
-            when(context.getAppContext()).thenReturn(mContext);
+            Whitebox.setInternalState(context, "clientId", "dummy");
+            Whitebox.setInternalState(context, "clientSecret", "");
+            Whitebox.setInternalState(context, "appContext", mContext);
             Exception throwed = null;
             try {
                 Authority.refreshToken(context, new AuthenticateCallback() {
@@ -927,10 +928,10 @@ public class AuthorityTest extends TestCaseBase {
         // ID0006
         {
             AuthenticationContext context = mock(AuthenticationContext.class);
-            when(context.getClientId()).thenReturn("dummy");
-            when(context.getClientSecret()).thenReturn("dummy");
-            when(context.canRefreshToken()).thenReturn(false);
-            when(context.getAppContext()).thenReturn(mContext);
+            Whitebox.setInternalState(context, "clientId", "dummy");
+            Whitebox.setInternalState(context, "clientSecret", "dummy");
+            Whitebox.setInternalState(context, "refreshToken", null);
+            Whitebox.setInternalState(context, "appContext", mContext);
             Exception noThrow = null;
             try {
                 final CountDownLatch latch = new CountDownLatch(1);
@@ -960,9 +961,9 @@ public class AuthorityTest extends TestCaseBase {
         // ID0008
         {
             AuthenticationContext context = mock(AuthenticationContext.class);
-            when(context.getClientId()).thenReturn("dummy");
-            when(context.getClientSecret()).thenReturn("dummy");
-            when(context.getAppContext()).thenReturn(mContext);
+            Whitebox.setInternalState(context, "clientId", "dummy");
+            Whitebox.setInternalState(context, "clientSecret", "dummy");
+            Whitebox.setInternalState(context, "appContext", mContext);
             Exception throwed = null;
             try {
                 Authority.refreshToken(context, null);
