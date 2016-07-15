@@ -24,10 +24,9 @@ import org.mockito.internal.util.reflection.Whitebox;
 import com.kii.example.photocolle.annotation.TestInformation;
 
 import android.annotation.SuppressLint;
-import android.test.AndroidTestCase;
 import android.text.format.Time;
 
-public class GetContentIDListWithTagsLogicTest2 extends AndroidTestCase {
+public class GetContentIDListWithTagsLogicTest2 extends TestCaseBase {
 
     @TestInformation(
             url = "https://docs.google.com/a/muraoka-design.com/spreadsheet/ccc?key=0Al0NPhbFN_J-dC1nd3RCR2pkRkVDSmdnYzc0UVVlZmc#gid=18",

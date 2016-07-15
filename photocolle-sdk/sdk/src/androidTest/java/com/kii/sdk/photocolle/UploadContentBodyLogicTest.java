@@ -20,9 +20,7 @@ import com.kii.example.photocolle.multipart.Field;
 
 import com.kii.sdk.photocolle.http.entity.mime.MultipartEntity;
 
-import android.test.AndroidTestCase;
-
-public class UploadContentBodyLogicTest extends AndroidTestCase {
+public class UploadContentBodyLogicTest extends TestCaseBase {
 
     @TestInformation(
         url = "https://docs.google.com/a/muraoka-design.com/spreadsheet/ccc?key=0Al0NPhbFN_J-dC1nd3RCR2pkRkVDSmdnYzc0UVVlZmc#gid=9",

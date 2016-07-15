@@ -10,9 +10,8 @@ import com.kii.example.photocolle.annotation.TestInformation;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.test.AndroidTestCase;
 
-public class AuthenticationContextTest extends AndroidTestCase {
+public class AuthenticationContextTest extends TestCaseBase {
 
     private static final String PHOTOCOLLE_PREF = "photocollePref";
     private static final String ACCESS_TOKEN = "accessToken";

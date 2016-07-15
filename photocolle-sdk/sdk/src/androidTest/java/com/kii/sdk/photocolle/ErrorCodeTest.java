@@ -2,9 +2,7 @@ package com.kii.sdk.photocolle;
 
 import com.kii.sdk.photocolle.BaseApplicationLayerException.ErrorCode;
 
-import android.test.AndroidTestCase;
-
-public class ErrorCodeTest extends AndroidTestCase {
+public class ErrorCodeTest extends TestCaseBase {
 
     public void testParameterError() throws Exception {
         assertEquals(ErrorCode.PARAMETER_ERROR, ErrorCode.toErrorCode(100));

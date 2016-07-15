@@ -17,9 +17,7 @@ import org.json.JSONObject;
 import com.kii.sdk.photocolle.BaseApplicationLayerException.ErrorCode;
 import com.kii.sdk.photocolle.UploadException.ErrorItem;
 
-import android.test.AndroidTestCase;
-
-public class ResponseUtilsTest extends AndroidTestCase {
+public class ResponseUtilsTest extends TestCaseBase {
 
     public void testThrowHttpStatusRelatedException1() throws Exception {
         StatusLine statusLine = mock(StatusLine.class);
