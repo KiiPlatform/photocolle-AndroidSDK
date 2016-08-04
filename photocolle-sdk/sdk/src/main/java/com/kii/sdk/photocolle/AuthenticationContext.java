@@ -158,14 +158,16 @@ public class AuthenticationContext {
      * @throws AuthenticationContextNotFoundException target data does not
      * exist.
      * @throws ParameterException One or more arguments are invalid.
+
      * @deprecated {@link Authority#authenticate(Context, String, String,
-     * String, DisplayType, String, AuthenticateCallback) authenticate()}
-     * loads {@link AuthenticationContext AuthenticationContext}
-     * automatically if saved. Applications should use {@link
-     * Authority#authenticate(Context, String, String, String, DisplayType,
-     * String, AuthenticateCallback) authenticate()}. If applications need to
-     * load {@link AuthenticationContext} by itself, Applications should use
-     * {@link AuthenticationContext#loadFrom(Context, String, String, String)
+     * String, EnumSet, String[], String, AuthenticateCallback)
+     * authenticate()} loads {@link AuthenticationContext
+     * AuthenticationContext} automatically if saved. Applications should use
+     * {@link Authority#authenticate(Context, String, String, String,
+     * EnumSet, String[], String, AuthenticateCallback)
+     * authenticate()}. If applications need to load {@link
+     * AuthenticationContext} by itself, Applications should use {@link
+     * AuthenticationContext#loadFrom(Context, String, String, String)
      * loadFrom(Context, String, String, String)} instead of this method..
      */
     @Deprecated
@@ -322,7 +324,7 @@ public class AuthenticationContext {
      *
      * @param context context of an application. must not be null or empty.
      * @throws AuthenticationContextAccessException fail to access stored
-     * @{link AuthenticationContext};
+     * {@link AuthenticationContext};
      * @throws ParameterException One or more arguments are invalid.
      */
     public static void removeAll(Context context)
@@ -399,6 +401,7 @@ public class AuthenticationContext {
      *
      * @param timeUnit time unit of returning value. must not be null.
      * @throws ParameterException an argument is invalid.
+     * @return remaining time.
      */
     public long getRemainingTime(TimeUnit timeUnit) throws ParameterException {
         if (timeUnit == null) {

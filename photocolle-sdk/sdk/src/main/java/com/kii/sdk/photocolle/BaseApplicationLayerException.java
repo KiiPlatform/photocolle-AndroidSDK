@@ -25,8 +25,8 @@ public abstract class BaseApplicationLayerException
          *  <LI>{@link PhotoColle#getContentIDListWithTags
          * getContentIDListWithTags}</LI>
          *  <LI>{@link PhotoColle#getTagIDList getTagIDList}</LI>
-         *  <LI>{@link PhotoColle#getContentDeletionHitory
-         * getContentDeletionHitory}</LI>
+         *  <LI>{@link PhotoColle#getContentDeletionHistory
+         * getContentDeletionHistory}</LI>
          *  <LI>{@link PhotoColle#getContentBodyInfo
          * getContentBodyInfo}</LI>
          *  <LI>{@link PhotoColle#getContentThumbnailInfo
@@ -61,8 +61,8 @@ public abstract class BaseApplicationLayerException
          *  <LI>{@link PhotoColle#getContentIDListWithTags
          * getContentIDListWithTags}</LI>
          *  <LI>{@link PhotoColle#getTagIDList getTagIDList}</LI>
-         *  <LI>{@link PhotoColle#getContentDeletionHitory
-         * getContentDeletionHitory}</LI>
+         *  <LI>{@link PhotoColle#getContentDeletionHistory
+         * getContentDeletionHistory}</LI>
          *  <LI>{@link PhotoColle#getContentBodyInfo
          * getContentBodyInfo}</LI>
          *  <LI>{@link PhotoColle#getContentThumbnailInfo
@@ -99,8 +99,8 @@ public abstract class BaseApplicationLayerException
          *  <LI>{@link PhotoColle#getContentIDListWithTags
          * getContentIDListWithTags}</LI>
          *  <LI>{@link PhotoColle#getTagIDList getTagIDList}</LI>
-         *  <LI>{@link PhotoColle#getContentDeletionHitory
-         * getContentDeletionHitory}</LI>
+         *  <LI>{@link PhotoColle#getContentDeletionHistory
+         * getContentDeletionHistory}</LI>
          *  <LI>{@link PhotoColle#getContentBodyInfo
          * getContentBodyInfo}</LI>
          *  <LI>{@link PhotoColle#getContentThumbnailInfo

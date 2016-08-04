@@ -276,6 +276,7 @@ public class PhotoColle {
      * resizeType is restricted by fileType. Detail of the restrictions are
      * shown by following table:
      * <table border="1">
+     *   <caption>Table of ResizeType</caption>
      *   <tr>
      *     <td>{@link FileType}</td>
      *     <td>Allowed {@link ResizeType}</td>
@@ -378,6 +379,7 @@ public class PhotoColle {
      * mimeType is restricted by fileType. Detail of the restrictions are
      * shown by following table:
      * <table border="1">
+     *   <caption>Table of MimeType</caption>
      *   <tr>
      *     <td>{@link FileType}</td>
      *     <td>Allowed {@link MimeType}</td>

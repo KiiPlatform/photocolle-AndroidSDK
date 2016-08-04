@@ -8,7 +8,7 @@ package com.kii.sdk.photocolle;
  * HREF="https://dev.smt.docomo.ne.jp/pdf/API_common_reference_v2.0.0.pdf">
  * docomo Developer support API common reference version 2.0.0</A>
  * @see Authority#authenticate(Context, String, String, String, EnumSet,
- * String, AuthenticateCallback)
+ * String[], String, AuthenticateCallback)
  */
 public enum Scope {
 
@@ -17,6 +17,7 @@ public enum Scope {
      *
      * <P>
      * This scope enables following APIs:
+     * </P>
      * <UL>
      *  <LI>{@link PhotoColle#getContentIDList(FileType, boolean, DateFilter,
      *  Integer, Integer, SortType) getContentIDList(FileType, boolean,
@@ -25,7 +26,6 @@ public enum Scope {
      *  Integer, Integer) getContentDeletionHistory(FileType, Date,
      *  Integer, Integer)}</LI>
      * </UL>
-     * </P>
      */
     PHOTO_GET_CONTENTS_LIST("PhotoGetContentsList"),
 
@@ -34,6 +34,7 @@ public enum Scope {
      *
      * <P>
      * This scope enables following APIs:
+     * </P>
      * <UL>
      *  <LI>{@link PhotoColle#getContentBodyInfo(FileType, ContentGUID,
      * ResizeType) getContentBodyInfo(FileType, ContentGUID,
@@ -41,7 +42,6 @@ public enum Scope {
      *  <LI>{@link PhotoColle#getContentThumbnailInfo(ContentGUID...)
      * getContentThumbnailInfo(ContentGUID...)}</LI>
      * </UL>
-     * </P>
      */
     PHOTO_GET_CONTENT("PhotoGetContent"),
 
@@ -50,12 +50,12 @@ public enum Scope {
      *
      * <P>
      * This scope enables following API:
+     * </P>
      * <UL>
      *  <LI>{@link PhotoColle#uploadContentBody(FileType, String, long,
      * MimeType, InputStream) uploadContentBody(FileType, String, long,
      * MimeType, InputStream)}</LI>
      * </UL>
-     * </P>
      */
     PHOTO_UPLOAD_CONTENT("PhotoUploadContent"),
 
@@ -64,10 +64,10 @@ public enum Scope {
      *
      * <P>
      * This scope enables following API:
+     * </P>
      * <UL>
      *  <LI>{@link PhotoColle#getCapacityInfo() getCapacityInfo()}</LI>
      * </UL>
-     * </P>
      */
     PHOTO_GET_VACANT_SIZE("PhotoGetVacantSize"),
 
@@ -98,6 +98,7 @@ public enum Scope {
      * <P>
      * If applications want to use this scope, you need to demand to Docomo.
      * This scope enables following APIs:
+     * </P>
      * <UL>
      *  <LI>{@link PhotoColle#getContentIDListWithTags(ProjectionType,
      * FileType, List, boolean, DateFilter, Integer, Integer, SortType)
@@ -106,7 +107,6 @@ public enum Scope {
      *  <LI>{@link PhotoColle#getTagIDList(Category, FileType, Date)
      * getTagIDList(Category, FileType, Date)}</LI>
      * </UL>
-     * </P>
      */
     PHOTO_GET_GROUP_INFO("PhotoGetGroupInfo"),
 
