@@ -30,10 +30,10 @@ public interface AuthenticateCallback {
      * </ul>
      * {@link AuthenticationCanceledException} is only passed when this
      * callback is called by {@link Authority#authenticate(Context, String,
-     * String, String, EnumSet, Set, String, AuthenticateCallback)}. {@link
-     * InvalidTokenException} and {@link NoRefreshTokenException} are only
-     * passed when this callback is called by {@link
-     * Authority#refreshToken(AuthenticationContext,
+     * String, String, EnumSet, String[], String,
+     * AuthenticateCallback)}. {@link InvalidTokenException} and {@link
+     * NoRefreshTokenException} are only passed when this callback is called
+     * by {@link Authority#refreshToken(AuthenticationContext,
      * AuthenticateCallback)}. Other exceptions are passed both methods.
      */
     void onAuthenticated(

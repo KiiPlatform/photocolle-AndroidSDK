@@ -63,7 +63,7 @@ public enum MimeType
     /**
      * Convert from a label to a mime type.
      *
-     * @param the label of mime type.
+     * @param label the label of mime type.
      * @return the mime type.
      * @throws ParameterException if this mime type has no constant with
      * the specified label.

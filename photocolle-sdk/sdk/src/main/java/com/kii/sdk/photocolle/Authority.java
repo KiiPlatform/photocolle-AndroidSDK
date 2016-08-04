@@ -183,8 +183,8 @@ public class Authority {
      *
      * <UL>
      *  <LI>AuthenticationContext created by {@link
-     *  Authority#authenticate(Context, String, String, String, EnumSet, Set,
-     *  String, AuthenticateCallback)} with valid
+     *  Authority#authenticate(Context, String, String, String, EnumSet,
+     *  String[], String, AuthenticateCallback)} with valid
      *  storeKey.</LI>
      *  <LI>AuthenticationContext loaded by {@link
      *  AuthenticationContext#loadFrom(Context, String, String, String)}</LI>
@@ -193,7 +193,7 @@ public class Authority {
      * </UL>
      *
      * You can check remaining time of access token by
-     * {@link AuthenticationContext#getRemainingTimeInMilliseconds()}.
+     * {@link AuthenticationContext#getRemainingTime(TimeUnit)}.
      *
      * @param authenticationContext the authentication context to be
      * updated. must not be null. authenticationContext loaded by {@link
