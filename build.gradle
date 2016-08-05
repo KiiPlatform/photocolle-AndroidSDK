@@ -193,6 +193,10 @@ publishing {
                 classifier 'library'
                 extension 'aar'
             }
+            artifact("package/sources.jar"){
+                classifier 'sources'
+                extension 'jar'
+            }
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
                 configurations.compile.allDependencies.each {
@@ -233,7 +237,14 @@ task cleanPackage(type: Delete) {
     delete "package"
 }
 
-task buildPackage(dependsOn: [buildRelease, cleanPackage, moveAAR, archiveJavaDoc]) {
+task moveSources(type: Copy, dependsOn: ':photocolle-sdk:sdk:sourcesJar') {
+    mustRunAfter "buildRelease"
+    from "${sdkOutputDir}/libs/sdk-sources.jar"
+    rename("sdk-sources.jar", "sources.jar")
+    destinationDir new File("package")
+}
+
+task buildPackage(dependsOn: [buildRelease, cleanPackage, moveAAR, archiveJavaDoc, moveSources]) {
 }
 
 task debugCompile(dependsOn: [cleanSDK, cleanApp, buildSDK, copySDKToApp, buildApp]) {
