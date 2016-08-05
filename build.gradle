@@ -8,6 +8,12 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.7.1"
+}
+apply plugin: 'maven-publish'
+
+
 allprojects {
     repositories {
         jcenter()
@@ -132,6 +138,102 @@ task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, cleanApp, buildSD
     from "${outputDir}/${releaseName}"
     into "${releaseName}"
     destinationDir new File(outputDir)
+}
+
+// configure for bintrayUpload task
+bintray {
+
+    // please provide these 2 value as parameter with
+    // "-Pbintray_user={user_name} -Pbintray_token={api_token}"
+
+    if(project.hasProperty('bintray_token')){
+        key = project.bintray_token
+    }
+    if(project.hasProperty('bintray_user')){
+        user = project.bintray_user
+    }
+    //the files to deploy are the result of maven publication
+    publications = ['PhotoCollePublication']
+    dryRun = false; // deploy files
+
+    publish = true //If version should be auto published after an upload
+
+    //Package configuration. The plugin will use the repo and name
+    // properties to check if the package already exists. In that case,
+    // there's no need to configure the other package properties (like
+    // userOrg, desc, etc).
+    pkg {
+        repo = 'KiiAndroidSDK'
+        name = 'photocolle-sdk'
+        userOrg = 'kii'
+        desc = 'PhotoCollection SDK'
+        websiteUrl = 'http://documentation.kii.com/'
+        issueTrackerUrl = 'http://community.kii.com/'
+        labels = ['MBaaS']
+        publicDownloadNumbers = true
+        version {
+            name = "${photocolleSDKVersion}" //Bintray logical version name
+        }
+    }
+}
+
+// Configure  maven publish
+publishing {
+    publications {
+        PhotoCollePublication(MavenPublication) {
+            groupId "com.kii"
+            artifactId "photocolle"
+            version "${photocolleSDKVersion}"
+
+            artifact("package/${releaseName}-API-Reference.zip"){
+                classifier 'documentation'
+                extension 'zip'
+            }
+            artifact("package/${releaseName}.aar"){
+                classifier 'library'
+                extension 'aar'
+            }
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.compile.allDependencies.each {
+                    // Skip local file dependencies.
+                    if (it.group == null)
+                        return
+                    if (it.name == null)
+                        return
+                    if (it.version == null)
+                        return
+
+                    def node = dependenciesNode.appendNode('dependency')
+                    node.appendNode('groupId', it.group)
+                    node.appendNode('artifactId', it.name)
+                    node.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+
+task archiveJavaDoc(type: Zip) {
+    mustRunAfter "cleanPackage"
+    archiveName "${releaseName}-API-Reference.zip"
+    from "${distributionDir}/docs/${releaseName}-API-Reference"
+    into "${releaseName}-API-Reference"
+    destinationDir new File("package")
+}
+
+task moveAAR(type: Copy) {
+    mustRunAfter "cleanPackage"
+    from "${distributionDir}/${releaseName}.aar"
+    destinationDir new File("package")
+}
+
+task cleanPackage(type: Delete) {
+    mustRunAfter "buildRelease"
+    delete "package"
+}
+
+task buildPackage(dependsOn: [buildRelease, cleanPackage, moveAAR, archiveJavaDoc]) {
 }
 
 task debugCompile(dependsOn: [cleanSDK, cleanApp, buildSDK, copySDKToApp, buildApp]) {
