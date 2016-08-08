@@ -181,25 +181,20 @@ bintray {
 publishing {
     publications {
         PhotoCollePublication(MavenPublication) {
-            groupId "com.kii.sdk"
-            artifactId "photocolle"
+            groupId 'com.kii.sdk'
+            artifactId 'photocolle'
             version "${photocolleSDKVersion}"
+
+            artifact "package/${releaseName}.aar"
 
             artifact("package/${releaseName}-API-Reference.zip"){
                 classifier 'documentation'
                 extension 'zip'
             }
-            artifact("package/${releaseName}.aar"){
-                classifier 'library'
-                extension 'aar'
-            }
             artifact("package/sources.jar"){
                 classifier 'sources'
                 extension 'jar'
             }
-            pom {
-                packaging 'aar'
-	    }
         }
     }
 }
