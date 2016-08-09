@@ -181,7 +181,7 @@ bintray {
 publishing {
     publications {
         PhotoCollePublication(MavenPublication) {
-            groupId 'com.kii.sdk'
+            groupId 'com.kii.photocolle'
             artifactId 'photocolle'
             version "${photocolleSDKVersion}"
 
