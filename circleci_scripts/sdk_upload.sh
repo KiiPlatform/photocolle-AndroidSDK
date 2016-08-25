@@ -1,3 +1,5 @@
+#!bin/bash
+
 # get the aar file name to upload
 version=$(cat gradle.properties | sed -e 's/photocolleSDKVersion=//g')
 sdk_body_file="target/PhotoColleSDK-Android-$version.zip"
