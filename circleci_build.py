@@ -57,7 +57,7 @@ sub_parser = parser.add_subparsers(help='Sub command help')
 # release command
 parser_release = sub_parser.add_parser('release', parents=[parent_parser], help='Release SDK')
 
-parser_release.add_argument('-d', '--doc-upload', action='store_false',
+parser_release.add_argument('-d', '--doc-upload', action='store_true',
         dest='doc_upload_dest',
         help='upload generated java docs to gh-pages')
 parser_release.add_argument('-s', '--sdk-upload', dest='sdk_upload_dest',
