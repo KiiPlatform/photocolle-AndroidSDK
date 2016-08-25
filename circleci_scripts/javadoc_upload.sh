@@ -2,7 +2,7 @@
 
 git config --global user.name "circleci"
 git config --global user.email "circleci@kii.com"
-git clone https://github.com/KiiPlatform/photocolle-AndroidSDK.git RepoForDoc
+git clone git@github.com:KiiPlatform/photocolle-AndroidSDK.git RepoForDoc
 
 cd RepoForDoc
 git checkout gh-pages
