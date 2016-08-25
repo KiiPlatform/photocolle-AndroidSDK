@@ -14,7 +14,7 @@ dependencies:
       ~/.android/avd/my-android-17.avd/config2.ini
     - mv ~/.android/avd/my-android-17.avd/config2.ini ~/.android/avd/my-android-17.avd/config.ini
     # clone internal-tools
-    - git clone git@github.com:KiiCorp/internal-tools.git
+    - git clone --depth 1 git@github.com:KiiCorp/internal-tools.git
   post:
     # build sdk
     - ./gradlew buildRelease
