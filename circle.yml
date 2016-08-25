@@ -45,7 +45,7 @@ deployment:
   release:
     tag: /v([0-9]\.)*[0-9].*/
     commands:
-      - bash circleci_scripts/sdk_upload.sh
+      - sh circleci_scripts/sdk_upload.sh
 
   # Build Invoked by REST API with parameters.
   parametrized:
@@ -53,7 +53,7 @@ deployment:
     commands:
       - >
         if [ "$UPLOAD_SDK" == 'true' ]; then
-          bash circleci_scripts/sdk_upload.sh
+          sh circleci_scripts/sdk_upload.sh
         fi
       - >
         if [ "$UPLOAD_DOC" == 'true' ]; then
