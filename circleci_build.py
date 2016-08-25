@@ -39,6 +39,8 @@ def release_sdk(args):
     if (args.doc_upload_dest != None):
         parameters.update({'UPLOAD_DOC': 'true',
             'DOC_DEST': args.doc_upload_dest})
+    if (args.skip_test):
+        parameters.update({'SKIP_TEST': 'true'})
 
     body_dictionary = {}
     if parameters:
@@ -62,6 +64,9 @@ parser_release.add_argument('-d', '--doc-upload', dest='doc_upload_dest',
 parser_release.add_argument('-s', '--sdk-upload', dest='sdk_upload_dest',
         choices=['test', 'release'],
         help='destination to upload generated sdk')
+parser_release.add_argument('-st', '--skip-test', action='store_true',
+        dest='skip_test',
+        help='skip test execution')
 parser_release.set_defaults(func=release_sdk)
 
 args = parser.parse_args()
