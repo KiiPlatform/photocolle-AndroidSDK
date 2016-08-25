@@ -41,3 +41,6 @@ captures/
 target/
 # Keystore files
 *.jks
+
+internal-tools/
+sdk-metadata.json
