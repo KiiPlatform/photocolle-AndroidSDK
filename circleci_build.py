@@ -36,9 +36,8 @@ def release_sdk(args):
         parameters.update({'UPLOAD_SDK': 'true',
             'SDK_DEST': args.sdk_upload_dest})
 
-    if (args.doc_upload_dest != None):
-        parameters.update({'UPLOAD_DOC': 'true',
-            'DOC_DEST': args.doc_upload_dest})
+    if (args.doc_upload_dest):
+        parameters.update({'UPLOAD_DOC': 'true'})
     if (args.skip_test):
         parameters.update({'SKIP_TEST': 'true'})
 
@@ -58,9 +57,9 @@ sub_parser = parser.add_subparsers(help='Sub command help')
 # release command
 parser_release = sub_parser.add_parser('release', parents=[parent_parser], help='Release SDK')
 
-parser_release.add_argument('-d', '--doc-upload', dest='doc_upload_dest',
-        choices=['staging', 'production'],
-        help='destination to upload generated java docs')
+parser_release.add_argument('-d', '--doc-upload', action='store_false',
+        dest='doc_upload_dest',
+        help='upload generated java docs to gh-pages')
 parser_release.add_argument('-s', '--sdk-upload', dest='sdk_upload_dest',
         choices=['test', 'release'],
         help='destination to upload generated sdk')

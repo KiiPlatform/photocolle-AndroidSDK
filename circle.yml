@@ -45,7 +45,7 @@ deployment:
     tag: /v([0-9]\.)*[0-9].*/
     commands:
       - export SDK_DEST=release && bash circleci_scripts/sdk_upload.sh
-      - export DOC_DSET=production && bash circleci_scripts/javadoc_upload.sh
+      - bash circleci_scripts/javadoc_upload.sh
 
   # Build Invoked by REST API with parameters.
   parametrized:

@@ -1,26 +1,13 @@
 #! bin/bash
 
-if [ "$DOC_DEST" = "staging" ]; then
-    declare -a uploadhosts=("kiidocs@stg-docs101jp.internal.kii.com")
-elif [ "$DOC_DEST" = "production" ]; then
-    declare -a uploadhosts=("kiidocs@docs101us.internal.kii.com" "kiidocs@docs102us.internal.kii.com")
-else
-    echo "invlid value of \$DOC_DEST, should be either staging or production"
-fi
+git config --global user.name "circleci"
+git config --global user.email "circleci@kii.com"
+git clone https://github.com/KiiPlatform/photocolle-AndroidSDK.git RepoForDoc
 
-basedir="/ext/ebs/references/android/photocolle"
-version=$(cat gradle.properties | sed -e 's/photocolleSDKVersion=//g')
-echo $version
-updir="$basedir/$version"
-latestdir="$basedir/latest"
-echo ""
-for host in "${uploadhosts[@]}"; do
-    uptarget="$host:$updir"
-    echo "Uploading to : $host"
-    rsync -rlptD --chmod=u+rw,g+r,o+r --chmod=Da+x --delete-after photocolle-sdk/sdk/build/docs/javadoc "$uptarget"
-    echo "Upload completed to : $uptarget"
-    ssh "$host" "rm $latestdir"
-    ssh "$host" "ln -s $updir $latestdir"
-done
+cd RepoForDoc
+git checkout gh-pages
+rm -fr docs/
+cp -fr ../photocolle-sdk/sdk/build/docs/javadoc docs
+git commit -a -m "update api doc"
+git push origin gh-pages
 
-echo "All uploads have completed!"
