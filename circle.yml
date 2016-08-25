@@ -56,7 +56,7 @@ deployment:
         fi
       - >
         if [ "$UPLOAD_DOC" == 'true' ]; then
-          echo 'TODO: implement doc upload'
+          sh circile_scripts/javadoc_upload.sh
         fi
 
 # vim: sts=2 sw=2 et ai:
