@@ -11,7 +11,7 @@ if [ -f "$sdk_body_file" ]; then
     sdk_meta_file=../../sdk-metadata.json
     sdk_body_file="../../$sdk_body_file"
 
-    if [ "$SDK_DEST" == 'release' ]; then
+    if [ "$SDK_DEST" = 'release' ]; then
         # release to kii cloud server
         echo "release to kii cloud"
         python sdk_uploader.py --meta=$sdk_meta_file --file=$sdk_body_file --content-type=application/zip --kii-bucket=sdks
@@ -21,7 +21,7 @@ if [ -f "$sdk_body_file" ]; then
         cd ../../
         ./gradlew bintrayUpload -Pbintray_token=$BINTRAY_TOKEN -Pbintray_user=$BINTRAY_USER
 
-    elif [ "$SDK_DEST" == 'test' ]; then
+    elif [ "$SDK_DEST" = 'test' ]; then
         python sdk_uploader.py --meta=$sdk_meta_file --file=$sdk_body_file --content-type=application/zip
         echo "test"
         cd ../../
