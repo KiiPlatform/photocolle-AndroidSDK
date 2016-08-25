@@ -17,13 +17,12 @@ dependencies:
     - git clone git@github.com:KiiCorp/internal-tools.git
   post:
     # build sdk
-    - ./gradlew debugCompile
+    - ./gradlew buildRelease
     # save lint reports of sdk
     - mkdir $CIRCLE_ARTIFACTS/lintReports; cp -fr photocolle-sdk/sdk/build/outputs/lint-results* $CIRCLE_ARTIFACTS/lintReports/
-    # generate sdk aar file
+    # save sdk aar file
     - cp -fr photocolle-sdk/sdk/build/outputs/aar/* $CIRCLE_ARTIFACTS
-    # generate java doc
-    - ./gradlew photocolle-sdk:sdk:javadoc
+    # save java doc
     - cp -fr photocolle-sdk/sdk/build/docs/javadoc $CIRCLE_ARTIFACTS/javadoc/
 
 test:
