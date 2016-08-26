@@ -13,31 +13,52 @@ dependencies:
       sed -e 's/^\(hw\.ramSize=\)[0-9]*$/\1512/' >
       ~/.android/avd/my-android-17.avd/config2.ini
     - mv ~/.android/avd/my-android-17.avd/config2.ini ~/.android/avd/my-android-17.avd/config.ini
+    # clone internal-tools
+    - git clone --depth 1 git@github.com:KiiCorp/internal-tools.git
+  post:
+    # build sdk
+    - ./gradlew buildRelease
+    - ./gradlew archiveJavaDoc
+    # save lint reports of sdk
+    - mkdir $CIRCLE_ARTIFACTS/lintReports; cp -fr photocolle-sdk/sdk/build/outputs/lint-results* $CIRCLE_ARTIFACTS/lintReports/
+    # save sdk aar file
+    - cp -fr photocolle-sdk/sdk/build/outputs/aar/* $CIRCLE_ARTIFACTS
+    # save java doc
+    - cp -fr photocolle-sdk/sdk/build/docs/javadoc $CIRCLE_ARTIFACTS/javadoc/
 
 test:
   pre:
-    # build sdk
-    - ./gradlew debugCompile
-    # save lint reports of sdk
-    - mkdir $CIRCLE_ARTIFACTS/lintReports; cp -fr photocolle-sdk/sdk/build/outputs/lint-results* $CIRCLE_ARTIFACTS/lintReports/
-    # generate sdk aar file
-    - cp -fr photocolle-sdk/sdk/build/outputs/aar/* $CIRCLE_ARTIFACTS
-    # generate java doc
-    - ./gradlew photocolle-sdk:sdk:javadoc
-    - cp -fr photocolle-sdk/sdk/build/docs/javadoc $CIRCLE_ARTIFACTS/javadoc/
-
-  override:
-    # start the emulator
     - emulator -memory 512 -avd my-android-17 -no-audio -no-window:
         background: true
         parallel: true
-    # wait for it to have booted
     - circle-android wait-for-boot
-    # run small tests  against the emulator.
-    - ./gradlew photocolle-sdk:sdk:unitTest
-    # copy the test results to the test results directory.
-    - cp -r junit-results/com.kii.sdk.photocolle-TEST.xml $CIRCLE_TEST_REPORTS/small_tests.xml
-    # copy the logcat file to test results directory.
-    - adb logcat -d > logcat.txt
-    - mv logcat.txt $CIRCLE_ARTIFACTS/logcat_small_test.txt
+  override:
+    - >
+      if [ "$SKIP_TEST" != 'true' ]; then
+        ./gradlew photocolle-sdk:sdk:unitTest
+        cp -r junit-results/com.kii.sdk.photocolle-TEST.xml $CIRCLE_TEST_REPORTS/small_tests.xml
+        adb logcat -d > logcat.txt
+        mv logcat.txt $CIRCLE_ARTIFACTS/logcat_small_test.txt
+      fi
 
+deployment:
+  release:
+    tag: /v([0-9]\.)*[0-9].*/
+    commands:
+      - export SDK_DEST=release && bash circleci_scripts/sdk_upload.sh
+      - bash circleci_scripts/javadoc_upload.sh
+
+  # Build Invoked by REST API with parameters.
+  parametrized:
+    branch: /.*/
+    commands:
+      - >
+        if [ "$UPLOAD_SDK" == 'true' ]; then
+          bash circleci_scripts/sdk_upload.sh
+        fi
+      - >
+        if [ "$UPLOAD_DOC" == 'true' ]; then
+          bash circleci_scripts/javadoc_upload.sh
+        fi
+
+# vim: sts=2 sw=2 et ai:
