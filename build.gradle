@@ -41,7 +41,7 @@ task initTarget(dependsOn: cleanRelease) << {
 task cleanSDK(dependsOn: ':photocolle-sdk:sdk:clean') {
 }
 
-task buildSDK(dependsOn: [':photocolle-sdk:sdk:build', ':phtocolle-sdk:sdk:sourcesJar']) {
+task buildSDK(dependsOn: [':photocolle-sdk:sdk:build', ':photocolle-sdk:sdk:sourcesJar']) {
     mustRunAfter "cleanSDK"
 }
 
@@ -78,7 +78,7 @@ task copy(dependsOn: [copySDKAARToDistribution, copyDocs]) {
     mustRunAfter "initTarget"
 }
 
-task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, buildSDK, archiveJavaDoc, , copy]) {
+task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, buildSDK, archiveJavaDoc, copy]) {
     archiveName "${releaseName}.zip"
     from "${outputDir}/${releaseName}"
     into "${releaseName}"
