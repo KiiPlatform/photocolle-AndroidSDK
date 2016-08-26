@@ -60,7 +60,8 @@ task copyJavaDoc(type: Copy, dependsOn: buildSDKJavaDoc) {
     into "${distributionDir}/docs/${releaseName}-API-Reference"
 }
 
-task archiveJavaDoc(type: Zip, dependsOn:buildSDKJavaDoc) {
+task archiveJavaDoc(type: Zip, dependsOn:copyJavaDoc) {
+    mustRunAfter copyJavaDoc
     archiveName "${releaseName}-API-Reference.zip"
     from "${distributionDir}/docs/${releaseName}-API-Reference"
     into "${releaseName}-API-Reference"
@@ -78,7 +79,7 @@ task copy(dependsOn: [copySDKAARToDistribution, copyDocs]) {
     mustRunAfter "initTarget"
 }
 
-task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, buildSDK, archiveJavaDoc, copy]) {
+task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, buildSDK, copy]) {
     archiveName "${releaseName}.zip"
     from "${outputDir}/${releaseName}"
     into "${releaseName}"

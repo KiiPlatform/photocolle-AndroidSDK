@@ -18,6 +18,7 @@ dependencies:
   post:
     # build sdk
     - ./gradlew buildRelease
+    - ./gradlew archiveJavaDoc
     # save lint reports of sdk
     - mkdir $CIRCLE_ARTIFACTS/lintReports; cp -fr photocolle-sdk/sdk/build/outputs/lint-results* $CIRCLE_ARTIFACTS/lintReports/
     # save sdk aar file
