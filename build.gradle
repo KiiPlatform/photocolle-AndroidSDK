@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.0'
+        classpath 'com.android.tools.build:gradle:2.1.3'
     }
 }
 
@@ -185,13 +185,13 @@ publishing {
             artifactId 'photocolle'
             version "${photocolleSDKVersion}"
 
-            artifact "package/${releaseName}.aar"
+            artifact "${distributionDir}/${releaseName}.aar"
 
-            artifact("package/${releaseName}-API-Reference.zip"){
+            artifact("${distributionDir}/${releaseName}-API-Reference.zip"){
                 classifier 'documentation'
                 extension 'zip'
             }
-            artifact("package/sources.jar"){
+            artifact("photocolle-sdk/sdk/build/libs/sdk-sources.jar"){
                 classifier 'sources'
                 extension 'jar'
             }
@@ -204,7 +204,7 @@ task archiveJavaDoc(type: Zip) {
     archiveName "${releaseName}-API-Reference.zip"
     from "${distributionDir}/docs/${releaseName}-API-Reference"
     into "${releaseName}-API-Reference"
-    destinationDir new File("package")
+    destinationDir new File("${distributionDir}")
 }
 
 task moveAAR(type: Copy) {
