@@ -29,8 +29,6 @@ def sdkDir = 'photocolle-sdk'
 def sdkOutputDir = "${sdkDir}/sdk/build"
 def sdkAARName = 'sdk-release.aar'
 def sdkAARPath = "${sdkOutputDir}/outputs/aar/${sdkAARName}"
-def appDir = 'test-app'
-def appAPKName = 'app-debug.apk'
 
 task cleanRelease(type: Delete) {
     delete outputDir
@@ -43,44 +41,12 @@ task initTarget(dependsOn: cleanRelease) << {
 task cleanSDK(dependsOn: ':photocolle-sdk:sdk:clean') {
 }
 
-task buildSDK(dependsOn: ':photocolle-sdk:sdk:build') {
+task buildSDK(dependsOn: [':photocolle-sdk:sdk:build', ':phtocolle-sdk:sdk:sourcesJar']) {
     mustRunAfter "cleanSDK"
 }
 
 task buildSDKJavaDoc(dependsOn: ':photocolle-sdk:sdk:javadoc') {
     mustRunAfter "cleanSDK"
-}
-
-task cleanApp(dependsOn: ':test-app:app:clean') {
-}
-
-task copySDKToApp(type: Copy, dependsOn: buildSDK) {
-    from "${sdkAARPath}"
-    into "${appDir}/app/libs"
-    rename("${sdkAARName}", "PhotoColleSDK.aar")
-}
-
-task buildApp(dependsOn: ':test-app:app:build') {
-    mustRunAfter "cleanApp", "copySDKToApp"
-}
-
-task copySDK(type: Copy) {
-    from("${sdkDir}") {
-        include 'sdk/libs/**'
-        include 'sdk/src/main/java/**'
-        include 'sdk/src/main/AndroidManifest.xml'
-        include 'sdk/build.gradle'
-        include 'gradle.properties'
-        include 'README.mkd'
-        include 'build.gradle'
-        include 'gradle/**'
-        include 'gradlew'
-        include 'gradlew.bat'
-        include 'proguard-project.txt'
-        include 'settings.gradle'
-    }
-    into "${outputDir}/${releaseName}/${sdkDir}"
-    exclude '**/.gitkeep'
 }
 
 task copySDKAARToDistribution(type: Copy, dependsOn: buildSDK) {
@@ -89,37 +55,16 @@ task copySDKAARToDistribution(type: Copy, dependsOn: buildSDK) {
     rename("${sdkAARName}", "${releaseName}.aar")
 }
 
-task copyApp(type: Copy) {
-    from("${appDir}") {
-        include 'app/src/main/assets/**'
-        include 'app/src/main/res/**'
-        include 'app/libs/**'
-        include 'app/src/main/java/**'
-        include 'app/src/main/AndroidManifest.xml'
-        include 'app/build.gradle'
-        include 'README.mkd'
-        include 'build.gradle'
-        include 'gradle/**'
-        include 'gradlew'
-        include 'gradlew.bat'
-        include 'proguard-project.txt'
-        include 'settings.gradle'
-    }
-    into "${distributionDir}/${appDir}"
-    exclude '**/.gitkeep'
-    exclude 'app/src/main/assets/photocolle_sdk_setting.json'
-    exclude 'app/src/main/assets/photocolle_setting.json'
-}
-
-task copyAppAPK(type: Copy, dependsOn: buildApp) {
-    from "${appDir}/app/build/outputs/apk/${appAPKName}"
-    into "${distributionDir}"
-    rename("${appAPKName}", "PhotocolleTestApp-debug.apk")
-}
-
 task copyJavaDoc(type: Copy, dependsOn: buildSDKJavaDoc) {
     from "${sdkOutputDir}/docs/javadoc"
     into "${distributionDir}/docs/${releaseName}-API-Reference"
+}
+
+task archiveJavaDoc(type: Zip, dependsOn:buildSDKJavaDoc) {
+    archiveName "${releaseName}-API-Reference.zip"
+    from "${distributionDir}/docs/${releaseName}-API-Reference"
+    into "${releaseName}-API-Reference"
+    destinationDir new File("${distributionDir}")
 }
 
 task copyDocs(type: Copy, dependsOn: copyJavaDoc) {
@@ -129,11 +74,11 @@ task copyDocs(type: Copy, dependsOn: copyJavaDoc) {
     into "${distributionDir}/docs"
 }
 
-task copy(dependsOn: [copySDK, copySDKAARToDistribution, copyApp, copyAppAPK, copyDocs]) {
+task copy(dependsOn: [copySDKAARToDistribution, copyDocs]) {
     mustRunAfter "initTarget"
 }
 
-task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, cleanApp, buildSDK, buildSDKJavaDoc, copySDKToApp, buildApp, copy]) {
+task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, buildSDK, archiveJavaDoc, , copy]) {
     archiveName "${releaseName}.zip"
     from "${outputDir}/${releaseName}"
     into "${releaseName}"
@@ -199,34 +144,5 @@ publishing {
     }
 }
 
-task archiveJavaDoc(type: Zip) {
-    mustRunAfter "cleanPackage"
-    archiveName "${releaseName}-API-Reference.zip"
-    from "${distributionDir}/docs/${releaseName}-API-Reference"
-    into "${releaseName}-API-Reference"
-    destinationDir new File("${distributionDir}")
-}
-
-task moveAAR(type: Copy) {
-    mustRunAfter "cleanPackage"
-    from "${distributionDir}/${releaseName}.aar"
-    destinationDir new File("package")
-}
-
-task cleanPackage(type: Delete) {
-    mustRunAfter "buildRelease"
-    delete "package"
-}
-
-task moveSources(type: Copy, dependsOn: ':photocolle-sdk:sdk:sourcesJar') {
-    mustRunAfter "buildRelease"
-    from "${sdkOutputDir}/libs/sdk-sources.jar"
-    rename("sdk-sources.jar", "sources.jar")
-    destinationDir new File("package")
-}
-
-task preparePackage(dependsOn: [buildRelease, cleanPackage, moveAAR, archiveJavaDoc, moveSources]) {
-}
-
-task debugCompile(dependsOn: [cleanSDK, cleanApp, buildSDK, copySDKToApp, buildApp]) {
+task debugCompile(dependsOn: [cleanSDK, buildSDK]) {
 }
