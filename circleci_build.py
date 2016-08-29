@@ -11,7 +11,6 @@ ch.setLevel(logging.DEBUG)
 logger.addHandler(ch)
 logger.setLevel(logging.DEBUG)
 
-API_TOKEN='c89a4584413592c7c2f46978979fd222f87c450d'
 HOST='circleci.com'
 
 def post_build(args, body_dictionary):
@@ -19,7 +18,7 @@ def post_build(args, body_dictionary):
     logger.debug('request body: {0}'.format(json_body))
 
     conn = httplib.HTTPSConnection(HOST)
-    path = '/api/v1/project/KiiPlatform/photocolle-AndroidSDK/tree/{0}?circle-token={1}'.format(args.branch, API_TOKEN)
+    path = '/api/v1/project/KiiPlatform/photocolle-AndroidSDK/tree/{0}?circle-token={1}'.format(args.branch, args.token)
 
     headers = {'content-type': 'application/json'}
     conn.request('POST', path, json_body, headers)
@@ -48,6 +47,8 @@ def release_sdk(args):
 
 parent_parser = argparse.ArgumentParser(add_help=False)
 parent_parser.add_argument('-b', '--branch', dest='branch', help='branch to build',
+        required=True)
+parent_parser.add_argument('-t', '--token', dest='token', help='Circle CI API token for build.',
         required=True)
 
 # make subcommands. release
