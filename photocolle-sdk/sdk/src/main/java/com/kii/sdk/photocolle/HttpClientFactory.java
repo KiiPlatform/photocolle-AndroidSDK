@@ -1,12 +1,14 @@
 package com.kii.sdk.photocolle;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.apache.OkApacheClient;
+
 import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 //For internal use
 class HttpClientFactory {
 
     HttpClient createClient() {
-        return new DefaultHttpClient();
+        return new OkApacheClient(new OkHttpClient());
     }
 }
