@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    compile 'com.squareup.okhttp:okhttp-apache:2.3.0'
+    compile 'com.squareup.okhttp:okhttp-apache:2.7.5'
     androidTestCompile files('libs/commons-fileupload-1.3.jar')
     compile 'com.crittercism.dexmaker:dexmaker:1.4'
     compile 'com.crittercism.dexmaker:dexmaker-mockito:1.4'
