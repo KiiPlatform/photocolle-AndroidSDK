@@ -235,8 +235,6 @@ public class AuthHiddenActivity extends Activity {
                 } catch (RuntimeException e) {
                     intent.putExtra(KEY_EXCEPTION,
                             new ResponseBodyParseException(e));
-                } finally {
-                    client.getConnectionManager().shutdown();
                 }
                 sendBroadcast(intent);
                 finish();

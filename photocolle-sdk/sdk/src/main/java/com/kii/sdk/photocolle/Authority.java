@@ -546,8 +546,6 @@ public class Authority {
         } catch (AuthenticationContextAccessException e) {
             // failed to save AuthenticationContext. Ignore this exception.
             Log.v(TAG, "save is failed.", e);
-        } finally {
-            client.getConnectionManager().shutdown();
         }
     }
 
