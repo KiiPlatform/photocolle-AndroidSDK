@@ -7,6 +7,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -481,12 +482,12 @@ public class PhotoColleTest extends AndroidTestCase {
         return retval;
     }
 
-    private static JSONObject loadAuthenticationContextData() throws Exception {
+    private JSONObject loadAuthenticationContextData() throws Exception {
         BufferedReader reader = null;
         try {
-            // TODO: use Environment.getExternalStorageDirectory().
-            reader = new BufferedReader(new FileReader(
-                        new File(PHOTOCOLLETEST_SETTINGDIR, "auth.json")));
+            reader = new BufferedReader(
+                new InputStreamReader(
+                    getContext().getResources().getAssets().open("auth.json")));
             StringBuilder buildr = new StringBuilder();
             String str;
             while((str = reader.readLine()) != null) {
