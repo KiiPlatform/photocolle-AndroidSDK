@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':photocolle-sdk:sdk'
+project(':photocolle-sdk:sdk').projectDir = new File(settingsDir, '../photocolle-sdk/sdk')
