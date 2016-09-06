@@ -31,5 +31,5 @@ repositories {
 dependencies {
     compile 'com.squareup.okhttp:okhttp-apache:2.7.5'
     compile 'com.android.support:support-v4:18.0.0'
-    compile project(':photocolle-sdk')
+    compile project(':photocolle-sdk:sdk')
 }
