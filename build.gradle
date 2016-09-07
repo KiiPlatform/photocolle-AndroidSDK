@@ -79,11 +79,7 @@ task copy(dependsOn: [copySDKAARToDistribution, copyDocs]) {
     mustRunAfter "initTarget"
 }
 
-task buildRelease(type: Zip, dependsOn: [initTarget, cleanSDK, buildSDK, copy]) {
-    archiveName "${releaseName}.zip"
-    from "${outputDir}/${releaseName}"
-    into "${releaseName}"
-    destinationDir new File(outputDir)
+task buildRelease(dependsOn: [initTarget, cleanSDK, buildSDK, copy]) {
 }
 
 // configure for bintrayUpload task
