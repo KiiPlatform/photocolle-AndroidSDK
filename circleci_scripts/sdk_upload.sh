@@ -6,7 +6,7 @@ sdk_body_file="target/PhotoColleSDK-Android-1.2.0/distribution/PhotoColleSDK-And
 
 if [ -f "$sdk_body_file" ]; then
 
-    echo "{ \"platform\" : \"android\", \"sdk\" : \"photocolle\", \"type\" : \"sdk\", \"version\" : \"v$version\", \"extension\" : \"zip\"}" > sdk-metadata.json
+    echo "{ \"platform\" : \"android\", \"sdk\" : \"photocolle\", \"type\" : \"sdk\", \"version\" : \"v$version\", \"extension\" : \"aar\"}" > sdk-metadata.json
 
     cd internal-tools/sdk-uploader
 
