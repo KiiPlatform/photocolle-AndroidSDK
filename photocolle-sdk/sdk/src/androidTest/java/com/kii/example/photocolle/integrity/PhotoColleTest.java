@@ -1,12 +1,12 @@
 package com.kii.example.photocolle.integrity;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,10 +19,10 @@ import com.kii.sdk.photocolle.Category;
 import com.kii.sdk.photocolle.ContentBodyInfo;
 import com.kii.sdk.photocolle.ContentGUID;
 import com.kii.sdk.photocolle.ContentInfo;
-import com.kii.sdk.photocolle.DetailedContentInfo;
 import com.kii.sdk.photocolle.ContentThumbnailInfo;
 import com.kii.sdk.photocolle.ContentThumbnailInfoList;
 import com.kii.sdk.photocolle.DataID;
+import com.kii.sdk.photocolle.DetailedContentInfo;
 import com.kii.sdk.photocolle.FileType;
 import com.kii.sdk.photocolle.ListResponse;
 import com.kii.sdk.photocolle.MimeType;
@@ -38,25 +38,10 @@ import com.kii.sdk.photocolle.TagType;
 import com.kii.sdk.photocolle.UploadDateFilter;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.test.AndroidTestCase;
 
 public class PhotoColleTest extends AndroidTestCase {
-
-    private static final String PHOTOCOLLETEST_DATADIR =
-            File.separator
-            + "sdcard"
-            + File.separator
-            + "photocolle-test"
-            + File.separator
-            + "data";
-
-    private static final String PHOTOCOLLETEST_SETTINGDIR =
-            File.separator
-            + "sdcard"
-            + File.separator
-            + "photocolle-test"
-            + File.separator
-            + "setting";
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -70,19 +55,20 @@ public class PhotoColleTest extends AndroidTestCase {
 
     public void testUploadContentBodyJPEG() throws Exception {
         PhotoColle photoColle = getPhotoColle();
-        File file = getFileFromTestDataDirectory("test1.jpg");
+        AssetFileDescriptor file = getFileFromTestDataDirectory("test1.jpg");
         DataID dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "test title.",
-                file.length(),
+                file.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
     }
 
-    private static File getFileFromTestDataDirectory(String filename) {
-        return new File(PHOTOCOLLETEST_DATADIR, filename);
+    private AssetFileDescriptor getFileFromTestDataDirectory(
+            String filename) throws IOException {
+        return getContext().getResources().getAssets().openFd(filename);
     }
 
     // test**Simple method is leaving arguments out, if it is able to.
@@ -269,13 +255,13 @@ public class PhotoColleTest extends AndroidTestCase {
 
     public void testGetContentBodyInfoOriginal() throws Exception {
         PhotoColle photoColle = getPhotoColle();
-        File file = getFileFromTestDataDirectory("body.jpg");
+        AssetFileDescriptor file = getFileFromTestDataDirectory("body.jpg");
         DataID dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
-                file.getName(),
-                file.length(),
+                "body.jpg",
+                file.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
@@ -302,13 +288,13 @@ public class PhotoColleTest extends AndroidTestCase {
 
     public void testGetContentBodyInfoResize() throws Exception {
         PhotoColle photoColle = getPhotoColle();
-        File file = getFileFromTestDataDirectory("body.jpg");
+        AssetFileDescriptor file = getFileFromTestDataDirectory("body.jpg");
         DataID dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "body2.jpg",
-                file.length(),
+                file.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
@@ -335,13 +321,13 @@ public class PhotoColleTest extends AndroidTestCase {
 
     public void testGetContentThumbnailInfoSingle() throws Exception {
         PhotoColle photoColle = getPhotoColle();
-        File file = getFileFromTestDataDirectory("thumb.jpg");
+        AssetFileDescriptor file = getFileFromTestDataDirectory("thumb.jpg");
         DataID dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
-                file.getName(),
-                file.length(),
+                "thumb.jpg",
+                file.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
@@ -370,57 +356,61 @@ public class PhotoColleTest extends AndroidTestCase {
 
     public void testGetContentThumbnailInfoPlural() throws Exception {
         PhotoColle photoColle = getPhotoColle();
-        File file = getFileFromTestDataDirectory("thumb.jpg");
+        AssetFileDescriptor file = getFileFromTestDataDirectory("thumb.jpg");
         DataID dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "thumb_1.jpg",
-                file.length(),
+                file.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
         TestUtil.waitForUploadIndexed();
 
+        AssetFileDescriptor file2 = getFileFromTestDataDirectory("thumb.jpg");
         dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "thumb_2.jpg",
-                file.length(),
+                file2.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file2.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
         TestUtil.waitForUploadIndexed();
 
+        AssetFileDescriptor file3 = getFileFromTestDataDirectory("thumb.jpg");
         dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "thumb_3.jpg",
-                file.length(),
+                file3.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file3.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
         TestUtil.waitForUploadIndexed();
 
+        AssetFileDescriptor file4 = getFileFromTestDataDirectory("thumb.jpg");
         dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "thumb_4.jpg",
-                file.length(),
+                file4.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file4.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
         TestUtil.waitForUploadIndexed();
 
+        AssetFileDescriptor file5 = getFileFromTestDataDirectory("thumb.jpg");
         dataId = photoColle.uploadContentBody(
                 FileType.IMAGE,
                 "thumb_5.jpg",
-                file.length(),
+                file5.getLength(),
                 MimeType.JPEG,
-                new FileInputStream(file));
+                file5.createInputStream());
         assertNotNull(dataId);
         assertNotNull(dataId.getString());
 
@@ -481,12 +471,12 @@ public class PhotoColleTest extends AndroidTestCase {
         return retval;
     }
 
-    private static JSONObject loadAuthenticationContextData() throws Exception {
+    private JSONObject loadAuthenticationContextData() throws Exception {
         BufferedReader reader = null;
         try {
-            // TODO: use Environment.getExternalStorageDirectory().
-            reader = new BufferedReader(new FileReader(
-                        new File(PHOTOCOLLETEST_SETTINGDIR, "auth.json")));
+            reader = new BufferedReader(
+                new InputStreamReader(
+                    getContext().getResources().getAssets().open("auth.json")));
             StringBuilder buildr = new StringBuilder();
             String str;
             while((str = reader.readLine()) != null) {

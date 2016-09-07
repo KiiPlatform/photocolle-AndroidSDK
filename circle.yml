@@ -35,8 +35,8 @@ test:
   override:
     - >
       if [ "$SKIP_TEST" != 'true' ]; then
-        ./gradlew photocolle-sdk:sdk:unitTest
-        cp -r junit-results/com.kii.sdk.photocolle-TEST.xml $CIRCLE_TEST_REPORTS/small_tests.xml
+        ./gradlew photocolle-sdk:sdk:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.package=com.kii.sdk.photocolle
+        cp -r photocolle-sdk/sdk/build/reports/androidTests/connected $CIRCLE_TEST_REPORTS/small_tests
         adb logcat -d > logcat.txt
         mv logcat.txt $CIRCLE_ARTIFACTS/logcat_small_test.txt
       fi

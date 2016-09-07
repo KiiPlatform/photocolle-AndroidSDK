@@ -16,11 +16,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -47,6 +47,9 @@ public class Authority {
             "https://api.smt.docomo.ne.jp/cgi11d/authorization");
     private static final URL DEFAULT_TOKEN_URL = MiscUtils.toUrl(
             "https://api.smt.docomo.ne.jp/cgi12/token");
+
+    private final static HttpClientFactory httpClientFactory
+        = new HttpClientFactory();
 
     /**
      * Invoke authentication process to get AuthenticationContext object.
@@ -504,7 +507,7 @@ public class Authority {
         throws ClientProtocolException, UnsupportedEncodingException,
                 IOException, HttpException, InvalidTokenException
     {
-        DefaultHttpClient client = new DefaultHttpClient();
+        HttpClient client = httpClientFactory.createClient();
         try {
             final ArrayList<Exception> exceptions = new ArrayList<Exception>(1);
             AuthorizationData data = client.execute(
@@ -543,8 +546,6 @@ public class Authority {
         } catch (AuthenticationContextAccessException e) {
             // failed to save AuthenticationContext. Ignore this exception.
             Log.v(TAG, "save is failed.", e);
-        } finally {
-            client.getConnectionManager().shutdown();
         }
     }
 
