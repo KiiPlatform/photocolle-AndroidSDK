@@ -68,7 +68,7 @@ task archiveJavaDoc(type: Zip, dependsOn:copyJavaDoc) {
     destinationDir new File("${distributionDir}")
 }
 
-task copyDocs(type: Copy, dependsOn: copyJavaDoc) {
+task copyDocs(type: Copy, dependsOn: archiveJavaDoc) {
     from 'docs'
     from 'README.mkd'
     from "${sdkDir}/LIMITATION.mkd"
