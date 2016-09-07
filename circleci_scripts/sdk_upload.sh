@@ -2,11 +2,11 @@
 
 # get the aar file name to upload
 version=`cat gradle.properties | sed -e 's/photocolleSDKVersion=//g'`
-sdk_body_file="target/PhotoColleSDK-Android-$version.zip"
+sdk_body_file="target/PhotoColleSDK-Android-1.2.0/distribution/PhotoColleSDK-Android-1.2.0.aar"
 
 if [ -f "$sdk_body_file" ]; then
 
-    echo "{ \"platform\" : \"android\", \"sdk\" : \"photocolle\", \"type\" : \"sdk\", \"version\" : \"v$version\", \"extension\" : \"zip\"}" > sdk-metadata.json
+    echo "{ \"platform\" : \"android\", \"sdk\" : \"photocolle\", \"type\" : \"sdk\", \"version\" : \"v$version\", \"extension\" : \"aar\"}" > sdk-metadata.json
 
     cd internal-tools/sdk-uploader
 
